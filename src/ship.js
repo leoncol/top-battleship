@@ -1,4 +1,4 @@
-function ship(size) {
+function Ship(size) {
     let length = size;
     let numberOfHits = 0;
     let isSunk = function(){
@@ -23,5 +23,5 @@ function ship(size) {
     return {isSunk, returnLength, increaseHit, returnNumberOfHits}
     }
    
-   module.exports = ship;
+   module.exports = Ship;
 
