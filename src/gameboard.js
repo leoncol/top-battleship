@@ -22,6 +22,48 @@ function Gameboard() {
         return newShip;
     }
 
+    let receiveAttack = function(coord1,coord2){
+        if (coord1 > 9|| coord2 > 9 ){
+            return 'Invalid coords'
+        } else {
+            let attack = 'x';
+            let ship = newBoard[coord1][coord2];
+            if (ship == undefined){
+                newBoard[coord1][coord2] = attack;
+                return attack;
+            } else {
+                ship.increaseHit();
+                let numberOfHits = ship.returnNumberOfHits();
+                newBoard[coord1][coord2] = attack;
+                
+                return numberOfHits
+            }
+        }
+       
+    }
+
+    let reportHits = function(gameboard){
+        let hits = [];
+        gameboard = newBoard;
+        for (const axisY of gameboard) {
+            let coord1 = 0;
+            let coord2 = 0;
+            let coords = [];
+            for (const axisX of axisY) {
+                if (axisX == 'x'){
+                    coord1 = gameboard.indexOf(axisY);
+                    coord2 = axisY.indexOf(axisX);
+                    coords.push(coord1);
+                    coords.push(coord2);
+                    hits.push(coords);
+                }
+            }
+        }
+
+        return hits;
+    }
+ 
+
     let isInBounds = function(length, coord1, coord2, orientation){ // Check if the subsequent vertical or horizontal slots are in bounds
         if (length == 2 && orientation == 'h' && newBoard[coord1][coord2+1] === null){
             return true; // check size 2 horizontally
@@ -90,7 +132,7 @@ function Gameboard() {
     }
 
 
-    return {placeShip}
+    return {placeShip, receiveAttack, reportHits}
     }
    
    module.exports = Gameboard;
