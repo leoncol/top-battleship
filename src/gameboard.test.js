@@ -26,7 +26,7 @@ test('Check the length of a placed ship ', () => {
     let newShip = newGameboard.placeShip(1,0,0);
 
 
-    expect(newShip.returnLength()).toEqual(1);
+    expect(newShip[0].returnLength()).toEqual(1);
 
 })
 
@@ -332,14 +332,14 @@ test('Place some ships, attack them, and then return the hits', () => {
     let attack1 = newGameboard.receiveAttack(0,0);
     let attack2 = newGameboard.receiveAttack(5,5);
     let attack3 = newGameboard.receiveAttack(7,9);
-    let displayHits = newGameboard.reportHits();
-   
+    let getHitShips = newGameboard.reportHitShips();
+    
     expect(typeof ship1[0]).toBe('object');
     expect(typeof ship2[0]).toBe('object');
     expect(typeof ship3[0]).toBe('object');
-    expect(displayHits[0]).toEqual([0,0]);
-    expect(displayHits[1]).toEqual([5,5]);
-    expect(displayHits[2]).toEqual([7,9]);
+    expect(getHitShips[0]).toEqual([0,0]);
+    expect(getHitShips[1]).toEqual([5,5]);
+    expect(getHitShips[2]).toEqual([7,9]);
 
     
  })
@@ -349,7 +349,7 @@ test('Place some ships, attack them, and then return the hits', () => {
     let attack1 = newGameboard.receiveAttack(0,0);
     let attack2 = newGameboard.receiveAttack(5,5);
     let attack3 = newGameboard.receiveAttack(7,9);
-    let displayHits = newGameboard.reportHits();
+    let displayHits = newGameboard.reportMissedHits();
    
     expect(displayHits[0]).toEqual([0,0]);
     expect(displayHits[1]).toEqual([5,5]);
@@ -358,4 +358,40 @@ test('Place some ships, attack them, and then return the hits', () => {
     
  })
 
- 
+ test('Place a size 4 horizontal ship at a specific coord, then attack it four times, sink it and report ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(4,5,5, 'h');
+    let attack1 = newGameboard.receiveAttack(5,5);
+    let attack2 = newGameboard.receiveAttack(5,6);
+    let attack3 = newGameboard.receiveAttack(5,7);
+    let attack4 = newGameboard.receiveAttack(5,8);
+    let isTheFleetSunk = newGameboard.isTheFleetSunk();
+    
+    expect(typeof object[0]).toBe('object');
+    expect(typeof object[1]).toBe('object');
+    expect(typeof object[2]).toBe('object');
+    expect(typeof object[3]).toBe('object');
+    expect(object).not.toBeNull(); 
+    expect(attack1).toBe(1);
+    expect(attack2).toBe(2);
+    expect(attack3).toBe(3);
+    expect(attack4).toBe(4);
+    expect(isTheFleetSunk).toBe(true)
+
+})
+
+test('Place a size 4 horizontal ship at a specific coord, then attack it once and report ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(4,5,5, 'h');
+    let attack1 = newGameboard.receiveAttack(5,5);
+    let isTheFleetSunk = newGameboard.isTheFleetSunk();
+    
+    expect(typeof object[0]).toBe('object');
+    expect(typeof object[1]).toBe('object');
+    expect(typeof object[2]).toBe('object');
+    expect(typeof object[3]).toBe('object');
+    expect(object).not.toBeNull(); 
+    expect(attack1).toBe(1);
+    expect(isTheFleetSunk).toBe(false)
+
+})

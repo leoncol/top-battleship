@@ -17,6 +17,34 @@ function Gameboard() {
 
     newBoard = createBoard();
 
+    let myFleet = [];
+
+    let hitShipsCoords = [];
+
+    let isTheFleetSunk = function(fleet = myFleet){
+        let sunk = 0;
+        let afloat = 0;
+
+        for (let i = 0; i <= fleet.length -1; i++){
+            let isItSunk = fleet[i][0].isSunk();
+            if (isItSunk == true){
+                sunk += 1;
+            } else {
+                afloat += 1;
+            }
+        }
+
+        if (sunk > afloat && afloat == 0){
+            return true;
+        } else {
+            return false;
+        }
+}
+
+    let reportHitShips = function(coords = hitShipsCoords){
+        return coords;
+    }
+
     let createShip = function(size){
         let newShip = Ship(size);
         return newShip;
@@ -34,15 +62,16 @@ function Gameboard() {
             } else {
                 ship.increaseHit();
                 let numberOfHits = ship.returnNumberOfHits();
-                newBoard[coord1][coord2] = attack;
-                
+
+                let hitCoords = [coord1,coord2]
+                hitShipsCoords.push(hitCoords);
                 return numberOfHits
             }
         }
        
     }
 
-    let reportHits = function(gameboard){
+    let reportMissedHits = function(gameboard){
         let hits = [];
         gameboard = newBoard;
         for (const axisY of gameboard) {
@@ -92,39 +121,54 @@ function Gameboard() {
             return 'Invalid orientation' // test orientation --  evaluate when ship is out of bounds
         } else {
             let newShip = createShip(size);
+            let fullShip = [];
             if (newShip.returnLength() == 1){
                 newBoard[coord1][coord2] = newShip;
-                return newBoard[coord1][coord2];
+                fullShip.push(newBoard[coord1][coord2]);
+                myFleet.push(fullShip);
+                return fullShip;
             } else if (newShip.returnLength() == 2 && orientation == 'h' && isInBounds(size, coord1, coord2, orientation)){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1][coord2+1] = newShip;
-                return [newBoard[coord1][coord2],newBoard[coord1][coord2+1]];
+                fullShip.push(newBoard[coord1][coord2],newBoard[coord1][coord2+1]);
+                myFleet.push(fullShip);
+                return fullShip;
             } else if (newShip.returnLength() == 2 && orientation == 'v' && isInBounds(size, coord1, coord2, orientation) == true){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1+1][coord2] = newShip;
-                return [newBoard[coord1][coord2],newBoard[coord1+1][coord2]];
+                fullShip.push(newBoard[coord1][coord2],newBoard[coord1+1][coord2]);
+                myFleet.push(fullShip);
+                return fullShip;
             } else if (newShip.returnLength() == 3 && orientation == 'h' && isInBounds(size, coord1, coord2, orientation) == true){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1][coord2+1] = newShip;
                 newBoard[coord1][coord2+2] = newShip;
-                return [newBoard[coord1][coord2], newBoard[coord1][coord2+1], newBoard[coord1][coord2+2]];
+                fullShip.push(newBoard[coord1][coord2], newBoard[coord1][coord2+1], newBoard[coord1][coord2+2]);
+                myFleet.push(fullShip);
+                return fullShip;
             } else if (newShip.returnLength() == 3 && orientation == 'v' && isInBounds(size, coord1, coord2, orientation) == true){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1+1][coord2] = newShip;
                 newBoard[coord1+2][coord2] = newShip;
-                return [newBoard[coord1][coord2], newBoard[coord1+1][coord2], newBoard[coord1+2][coord2]];
+                fullShip.push(newBoard[coord1][coord2], newBoard[coord1+1][coord2], newBoard[coord1+2][coord2]);
+                myFleet.push(fullShip);
+                return fullShip;
             }  else if (newShip.returnLength() == 4 && orientation == 'h' && isInBounds(size, coord1, coord2, orientation) == true){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1][coord2+1] = newShip;
                 newBoard[coord1][coord2+2] = newShip;
                 newBoard[coord1][coord2+3] = newShip;
-                return [newBoard[coord1][coord2], newBoard[coord1][coord2+1], newBoard[coord1][coord2+2],newBoard[coord1][coord2+3]];
+                fullShip.push(newBoard[coord1][coord2], newBoard[coord1][coord2+1], newBoard[coord1][coord2+2],newBoard[coord1][coord2+3]);
+                myFleet.push(fullShip);
+                return fullShip;
             }   else if (newShip.returnLength() == 4 && orientation == 'v' && isInBounds(size, coord1, coord2, orientation) == true){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1+1][coord2] = newShip;
                 newBoard[coord1+2][coord2] = newShip;
                 newBoard[coord1+3][coord2] = newShip;
-                return [newBoard[coord1][coord2], newBoard[coord1+1][coord2], newBoard[coord1+2][coord2],newBoard[coord1+3][coord2] ];
+                fullShip.push(newBoard[coord1][coord2], newBoard[coord1+1][coord2], newBoard[coord1+2][coord2],newBoard[coord1+3][coord2]);
+                myFleet.push(fullShip);
+                return fullShip;
             } else {
                 return 'Invalid placement. Ship out of bounds.'
             }
@@ -132,7 +176,7 @@ function Gameboard() {
     }
 
 
-    return {placeShip, receiveAttack, reportHits}
+    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips}
     }
    
    module.exports = Gameboard;
