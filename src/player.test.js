@@ -6,6 +6,7 @@ test('player ris computer', () => {
     let computerPlayer = player('computer');
 
 
-    expect(computerPlayer.returnTypeOfPlayer()).toEqual('computer');
+    expect(computerPlayer.typeOfPlayer).toEqual('computer');
 
 })
+

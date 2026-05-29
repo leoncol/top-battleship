@@ -4,11 +4,12 @@ import Gameboard from "./gameboard";
 // Each player object should contain its own gameboard.
 
 function Player(type){
+    let typeOfPlayer = '';
 
-    if (type != 'computer' || type != 'human'){
-        return 'Invalid type'
+    if (type != 'computer' && type != 'human'){
+        typeOfPlayer = 'Invalid type'
     } else {
-        let typeOfPlayer = type;
+        typeOfPlayer = type;
     }
     
 
@@ -19,3 +20,5 @@ function Player(type){
 
     return {myGameboard, typeOfPlayer}
 }
+
+module.exports = Player;
