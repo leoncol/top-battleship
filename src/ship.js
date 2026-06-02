@@ -1,3 +1,5 @@
+export default Ship;
+
 function Ship(size) {
     let length = size;
     let numberOfHits = 0;
@@ -23,5 +25,5 @@ function Ship(size) {
     return {isSunk, returnLength, increaseHit, returnNumberOfHits}
     }
    
-   module.exports = Ship;
+//    module.exports = Ship;
 

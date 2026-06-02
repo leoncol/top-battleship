@@ -1,4 +1,5 @@
 import Ship from "./ship";
+export default Gameboard;
 
 function Gameboard() {
     
@@ -179,5 +180,5 @@ function Gameboard() {
     return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips}
     }
    
-   module.exports = Gameboard;
+//    module.exports = Gameboard;
 
