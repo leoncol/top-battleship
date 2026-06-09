@@ -31,6 +31,12 @@ html, body {
     border: 1px solid black;
 }
 
+#gameboards {
+    display: flex;
+    justify-content: space-around;
+    gap: 5rem;
+}
+
 .game-position {
     display: flex;
     justify-content: center;

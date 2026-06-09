@@ -16,7 +16,7 @@ function Gameboard() {
         return board;
     }
 
-    newBoard = createBoard();
+    let newBoard = createBoard();
 
     let myFleet = [];
 
