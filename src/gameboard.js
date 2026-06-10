@@ -112,15 +112,76 @@ function Gameboard() {
         }
     }
 
+    let isFree = function (size, coord1, coord2, orientation){
+        switch (size) {
+            case 1:
+                if (newBoard[coord1][coord2] == null){
+                    return true;
+                } else {
+                    return false;
+                }
+            case 2:
+                if (orientation == 'h'){
+                    if (newBoard[coord1][coord2] == null && newBoard[coord1][coord2+1] == null){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (orientation == 'v'){
+                    if (newBoard[coord1][coord2] == null && newBoard[coord1+1][coord2] == null){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            case 3:
+                if (orientation == 'h'){
+                    if (newBoard[coord1][coord2] == null && newBoard[coord1][coord2+1] == null 
+                        && newBoard[coord1][coord2+2] == null){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (orientation == 'v'){
+                    if (newBoard[coord1][coord2] == null && newBoard[coord1+1][coord2] == null 
+                        && newBoard[coord1+2][coord2] == null){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            case 4:
+                if (orientation == 'h'){
+                    if (newBoard[coord1][coord2] == null && newBoard[coord1][coord2+1] == null 
+                        && newBoard[coord1][coord2+2] == null && newBoard[coord1][coord2+3] == null){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (orientation == 'v'){
+                    if (newBoard[coord1][coord2] == null && newBoard[coord1+1][coord2] == null 
+                        && newBoard[coord1+2][coord2] == null && newBoard[coord1+3][coord2] == null){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }    
+            }
+        }
+
 
     let placeShip = function(size, coord1, coord2, orientation){
         if (coord1 > 9|| coord2 > 9 ){
-            return 'Invalid coords'
+            return 'Invalid coords';
         } else if (size > 4){
-            return 'Invalid size'
+            return 'Invalid size';
         } else if (size != 1 && orientation != 'h' && orientation != 'v'){
-            return 'Invalid orientation' // test orientation --  evaluate when ship is out of bounds
-        } else {
+            return 'Invalid orientation'; // test orientation --  evaluate when ship is out of bounds;
+        } else if () 
+        
+        else if (isFree(size, coord1, coord2, orientation) == false){
+            return 'Invalid placement. Position taken';
+        } else if (isInBounds{
             let newShip = createShip(size);
             let fullShip = [];
             if (newShip.returnLength() == 1){
@@ -180,5 +241,5 @@ function Gameboard() {
     return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips}
     }
    
-//    module.exports = Gameboard;
+ module.exports = Gameboard;
 

@@ -37,6 +37,11 @@ html, body {
     gap: 5rem;
 }
 
+
+#new-game{
+    margin-bottom: 1rem;
+}
+
 .game-position {
     display: flex;
     justify-content: center;

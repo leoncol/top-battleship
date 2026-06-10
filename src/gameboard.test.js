@@ -395,3 +395,86 @@ test('Place a size 4 horizontal ship at a specific coord, then attack it once an
     expect(isTheFleetSunk).toBe(false)
 
 })
+
+test('Place a ship at a specific taken coord ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(1,0,0);
+    let object2 = newGameboard.placeShip(1,0,0);
+
+    
+    expect(object2).toEqual('Invalid placement. Position taken'); 
+})
+
+
+// test('Check the length of a placed ship ', () => {
+//     let newGameboard = gameboard();
+//     let newShip = newGameboard.placeShip(1,0,0);
+
+
+//     expect(newShip[0].returnLength()).toEqual(1);
+
+// })
+
+
+// test('Place a size 2 horizontal ship at a specific coord ', () => {
+//     let newGameboard = gameboard();
+//     let object = newGameboard.placeShip(2,0,0,'h')
+    
+//     expect(typeof object[0]).toBe('object');
+//     expect(typeof object[1]).toBe('object');
+//     expect(object).not.toBeNull(); 
+// })
+
+// test('Place a size 2 vertical ship at a specific coord ', () => {
+//     let newGameboard = gameboard();
+//     let object = newGameboard.placeShip(2,0,0, 'v')
+    
+//     expect(typeof object[0]).toBe('object');
+//     expect(typeof object[1]).toBe('object');
+//     expect(object).not.toBeNull(); 
+// })
+
+// test('Place a size 3 horizontal ship at a specific coord ', () => {
+//     let newGameboard = gameboard();
+//     let object = newGameboard.placeShip(3,5,5, 'h')
+    
+//     expect(typeof object[0]).toBe('object');
+//     expect(typeof object[1]).toBe('object');
+//     expect(typeof object[2]).toBe('object');
+//     expect(object).not.toBeNull(); 
+// })
+
+
+
+// test('Place a size 3 vertical ship at a specific coord ', () => {
+//     let newGameboard = gameboard();
+//     let object = newGameboard.placeShip(3,7,6, 'v')
+    
+//     expect(typeof object[0]).toBe('object');
+//     expect(typeof object[1]).toBe('object');
+//     expect(typeof object[2]).toBe('object');
+//     expect(object).not.toBeNull(); 
+// })
+
+
+// test('Place a size 4 horizontal ship at a specific coord ', () => {
+//     let newGameboard = gameboard();
+//     let object = newGameboard.placeShip(4,0,0, 'h')
+    
+//     expect(typeof object[0]).toBe('object');
+//     expect(typeof object[1]).toBe('object');
+//     expect(typeof object[2]).toBe('object');
+//     expect(typeof object[3]).toBe('object');
+//     expect(object).not.toBeNull(); 
+// })
+
+// test('Place a size 4 vertical ship at a specific coord ', () => {
+//     let newGameboard = gameboard();
+//     let object = newGameboard.placeShip(4,0,0, 'v')
+    
+//     expect(typeof object[0]).toBe('object');
+//     expect(typeof object[1]).toBe('object');
+//     expect(typeof object[2]).toBe('object');
+//     expect(typeof object[3]).toBe('object');
+//     expect(object).not.toBeNull(); 
+// })

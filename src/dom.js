@@ -23,17 +23,29 @@ function generateHtmlBoard(){
 export { 
     generateHtmlBoard};
 
-function gameController(){
+function generateBoards(){
     // create both gameboards
     generateHtmlBoard();
     generateHtmlBoard();
     // Set up a new game by creating Players. For now just populate each player’s Gameboard with 
     // predetermined coordinates. 
     // You are going to implement a system for allowing players to place their ships later.
-    let humanPlayer = Player('human');
-    let computerPlayer = Player('computer');
-
+    
 
 }
 
-gameController();
+function gameController(){
+    let humanPlayer = Player('human');
+    let computerPlayer = Player('computer');
+
+}
+
+function eventListeners(){
+    let newGameButton = document.querySelector('#new-game');
+
+    newGameButton.addEventListener("click", () => {
+        gameController();
+    })
+}
+generateBoards();
+eventListeners();
