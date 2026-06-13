@@ -405,6 +405,61 @@ test('Place a ship at a specific taken coord ', () => {
     expect(object2).toEqual('Invalid placement. Position taken'); 
 })
 
+test('Place a 2-square horizontal ship at a specific taken coord ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(2,0,0,'h');
+    let object2 = newGameboard.placeShip(2,0,0, 'h');
+
+    
+    expect(object2).toEqual('Invalid placement. Position taken'); 
+})
+
+test('Place a 2-square vertical ship at a specific taken coord ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(2,0,0,'v');
+    let object2 = newGameboard.placeShip(2,0,0, 'v');
+
+    
+    expect(object2).toEqual('Invalid placement. Position taken'); 
+})
+
+
+
+test('Place a 3-square horizontal ship at a specific taken coord ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(3,0,0,'h');
+    let object2 = newGameboard.placeShip(3,0,0, 'h');
+
+    
+    expect(object2).toEqual('Invalid placement. Position taken'); 
+})
+
+test('Place a 3-square vertical ship at a specific taken coord ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(3,0,0,'v');
+    let object2 = newGameboard.placeShip(3,0,0, 'v');
+
+    
+    expect(object2).toEqual('Invalid placement. Position taken'); 
+})
+
+test('Place a 4-square horizontal ship at a specific taken coord ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(4,0,0,'h');
+    let object2 = newGameboard.placeShip(4,0,0, 'h');
+
+    
+    expect(object2).toEqual('Invalid placement. Position taken'); 
+})
+
+test('Place a 4-square vertical ship at a specific taken coord ', () => {
+    let newGameboard = gameboard();
+    let object = newGameboard.placeShip(4,0,0,'v');
+    let object2 = newGameboard.placeShip(4,0,0, 'v');
+
+    
+    expect(object2).toEqual('Invalid placement. Position taken'); 
+})
 
 // test('Check the length of a placed ship ', () => {
 //     let newGameboard = gameboard();
