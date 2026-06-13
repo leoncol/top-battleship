@@ -179,10 +179,10 @@ function Gameboard() {
             return 'Invalid size';
         } else if (size != 1 && orientation != 'h' && orientation != 'v'){
             return 'Invalid orientation'; // test orientation --  evaluate when ship is out of bounds;
-        } else if (isFree(size, coord1, coord2, orientation) == false){
-            return 'Invalid placement. Position taken';
         } else if (isInBounds(size, coord1, coord2, orientation) == false){
             return 'Invalid placement. Ship out of bounds.';
+        } else if (isFree(size, coord1, coord2, orientation) == false){
+            return 'Invalid placement. Position taken'; 
         } else {
             let newShip = createShip(size);
             let fullShip = [];
