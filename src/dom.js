@@ -1,6 +1,6 @@
-import Gameboard from "./gameboard"
+import {Gameboard} from "./gameboard"
 import {Player} from "./player"
-import Ship from "./ship"
+import {Ship} from "./ship"
 
 function generateHtmlBoard(){
     
@@ -37,7 +37,50 @@ function generateBoards(){
 function gameController(){
     let humanPlayer = Player('human');
     let computerPlayer = Player('computer');
+    populateGameboards(humanPlayer, computerPlayer);
+    displayShips(humanPlayer.myGameboard,computerPlayer.myGameboard);
+}
 
+//4 1-square ships, 3 2-squares ships (1 h, 2 v), 2 3-squares ship (2 h), 1 4-squares ship (1 v)
+
+function populateGameboards(human, computer){
+    let humanGameboard = human.myGameboard;
+    humanGameboard.placeShip(1,0,0);
+    humanGameboard.placeShip(1,9,9);
+    humanGameboard.placeShip(1,5,5);
+    humanGameboard.placeShip(1,0,9);
+    humanGameboard.placeShip(2,3,0,'v');
+    humanGameboard.placeShip(2,3,9,'v');
+    humanGameboard.placeShip(2,9,0,'h');
+    humanGameboard.placeShip(3,7,7,'h');
+    humanGameboard.placeShip(3,2,3,'h');
+    humanGameboard.placeShip(4,0,7,'v');
+
+    let computerGameboard = computer.myGameboard;
+    computerGameboard.placeShip(1,0,0);
+    computerGameboard.placeShip(1,9,9);
+    computerGameboard.placeShip(1,5,5);
+    computerGameboard.placeShip(1,0,9);
+    computerGameboard.placeShip(2,3,0,'v');
+    computerGameboard.placeShip(2,3,9,'v');
+    computerGameboard.placeShip(2,9,0,'h');
+    computerGameboard.placeShip(3,7,7,'h');
+    computerGameboard.placeShip(3,2,3,'h');
+    computerGameboard.placeShip(4,0,7,'v');
+
+}
+
+function displayShips(humanBoard, computerBoard){
+    let ships = [];
+    let board = humanBoard.newBoard;
+    for (let i = 0; i < 99; i++){ // fix this loop, it shouldn't go up to 99
+        let shipPart = board[i];
+        if (shipPart != 0){
+            ships.push(shipPart);
+        }
+    }
+
+    console.log(ships);
 }
 
 function eventListeners(){
