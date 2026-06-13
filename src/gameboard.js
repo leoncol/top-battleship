@@ -95,7 +95,9 @@ function Gameboard() {
  
 
     let isInBounds = function(length, coord1, coord2, orientation){ // Check if the subsequent vertical or horizontal slots are in bounds
-        if (length == 2 && orientation == 'h' && newBoard[coord1][coord2+1] === null){
+        if (length == 1 && newBoard[coord1][coord2] === null){
+            return true;
+        } else if (length == 2 && orientation == 'h' && newBoard[coord1][coord2+1] === null){
             return true; // check size 2 horizontally
         } else if (length == 2 && orientation == 'v' && newBoard[coord1+1] !== undefined){
             return true; // check size 2 vertically
@@ -177,11 +179,11 @@ function Gameboard() {
             return 'Invalid size';
         } else if (size != 1 && orientation != 'h' && orientation != 'v'){
             return 'Invalid orientation'; // test orientation --  evaluate when ship is out of bounds;
-        } else if () 
-        
-        else if (isFree(size, coord1, coord2, orientation) == false){
+        } else if (isFree(size, coord1, coord2, orientation) == false){
             return 'Invalid placement. Position taken';
-        } else if (isInBounds{
+        } else if (isInBounds(size, coord1, coord2, orientation) == false){
+            return 'Invalid placement. Ship out of bounds.';
+        } else {
             let newShip = createShip(size);
             let fullShip = [];
             if (newShip.returnLength() == 1){
@@ -189,33 +191,33 @@ function Gameboard() {
                 fullShip.push(newBoard[coord1][coord2]);
                 myFleet.push(fullShip);
                 return fullShip;
-            } else if (newShip.returnLength() == 2 && orientation == 'h' && isInBounds(size, coord1, coord2, orientation)){
+            } else if (newShip.returnLength() == 2 && orientation == 'h'){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1][coord2+1] = newShip;
                 fullShip.push(newBoard[coord1][coord2],newBoard[coord1][coord2+1]);
                 myFleet.push(fullShip);
                 return fullShip;
-            } else if (newShip.returnLength() == 2 && orientation == 'v' && isInBounds(size, coord1, coord2, orientation) == true){
+            } else if (newShip.returnLength() == 2 && orientation == 'v'){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1+1][coord2] = newShip;
                 fullShip.push(newBoard[coord1][coord2],newBoard[coord1+1][coord2]);
                 myFleet.push(fullShip);
                 return fullShip;
-            } else if (newShip.returnLength() == 3 && orientation == 'h' && isInBounds(size, coord1, coord2, orientation) == true){
+            } else if (newShip.returnLength() == 3 && orientation == 'h'){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1][coord2+1] = newShip;
                 newBoard[coord1][coord2+2] = newShip;
                 fullShip.push(newBoard[coord1][coord2], newBoard[coord1][coord2+1], newBoard[coord1][coord2+2]);
                 myFleet.push(fullShip);
                 return fullShip;
-            } else if (newShip.returnLength() == 3 && orientation == 'v' && isInBounds(size, coord1, coord2, orientation) == true){
+            } else if (newShip.returnLength() == 3 && orientation == 'v' ){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1+1][coord2] = newShip;
                 newBoard[coord1+2][coord2] = newShip;
                 fullShip.push(newBoard[coord1][coord2], newBoard[coord1+1][coord2], newBoard[coord1+2][coord2]);
                 myFleet.push(fullShip);
                 return fullShip;
-            }  else if (newShip.returnLength() == 4 && orientation == 'h' && isInBounds(size, coord1, coord2, orientation) == true){
+            }  else if (newShip.returnLength() == 4 && orientation == 'h' ){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1][coord2+1] = newShip;
                 newBoard[coord1][coord2+2] = newShip;
@@ -223,7 +225,7 @@ function Gameboard() {
                 fullShip.push(newBoard[coord1][coord2], newBoard[coord1][coord2+1], newBoard[coord1][coord2+2],newBoard[coord1][coord2+3]);
                 myFleet.push(fullShip);
                 return fullShip;
-            }   else if (newShip.returnLength() == 4 && orientation == 'v' && isInBounds(size, coord1, coord2, orientation) == true){
+            }   else if (newShip.returnLength() == 4 && orientation == 'v' ){
                 newBoard[coord1][coord2] = newShip;
                 newBoard[coord1+1][coord2] = newShip;
                 newBoard[coord1+2][coord2] = newShip;
@@ -231,11 +233,10 @@ function Gameboard() {
                 fullShip.push(newBoard[coord1][coord2], newBoard[coord1+1][coord2], newBoard[coord1+2][coord2],newBoard[coord1+3][coord2]);
                 myFleet.push(fullShip);
                 return fullShip;
-            } else {
-                return 'Invalid placement. Ship out of bounds.'
             }
         }
     }
+
 
 
     return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips}
