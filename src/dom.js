@@ -70,18 +70,93 @@ function populateGameboards(human, computer){
 
 }
 
-function displayShips(humanBoard, computerBoard){
-    let ships = [];
-    let board = humanBoard.newBoard;
-    for (let i = 0; i < 99; i++){ // fix this loop, it shouldn't go up to 99
-        let shipPart = board[i];
-        if (shipPart != 0){
-            ships.push(shipPart);
-        }
-    }
+let ships = [];
 
-    console.log(ships);
+function displayShips(humanBoard, computerBoard){
+    
+    let board = humanBoard.newBoard;
+    let shipsIndexes = [];
+    for (let i = 0; i <= 9; i++){
+        for (let x = 0; x <= 9; x++){
+            let shipPart = board[i][x];
+            if (shipPart != 0){
+            ships.push(shipPart);
+            let yIndex = board.indexOf(board[i]);
+            let xIndex = board[i];
+            xIndex = xIndex.indexOf(xIndex[x]);
+            let shipIndex = [];
+            shipIndex.push(yIndex,xIndex);
+            shipsIndexes.push(shipIndex);
+            
+
+        }
+        } // fix this loop, it shouldn't go up to 99
+    }
+    return shipsIndexes;
+
+    
 }
+
+// function colorBoard(shipIndexes){
+
+//     for (let i = 0; i <= shipIndexes.length -1; i++){
+//         switch (shipIndexes[]) {
+//             case 1:
+//                 if (newBoard[coord1][coord2] === 0){
+//                     return true;
+//                 } else {
+//                     return false;
+//                 }
+//             case 2:
+//                 if (orientation == 'h'){
+//                     if (newBoard[coord1][coord2] === 0 && newBoard[coord1][coord2+1] === 0){
+//                         return true;
+//                     } else {
+//                         return false;
+//                     }
+//                 } else if (orientation == 'v'){
+//                     if (newBoard[coord1][coord2] === 0 && newBoard[coord1+1][coord2] === 0){
+//                         return true;
+//                     } else {
+//                         return false;
+//                     }
+//                 }
+//             case 3:
+//                 if (orientation == 'h'){
+//                     if (newBoard[coord1][coord2] === 0 && newBoard[coord1][coord2+1] === 0
+//                         && newBoard[coord1][coord2+2] === 0){
+//                         return true;
+//                     } else {
+//                         return false;
+//                     }
+//                 } else if (orientation == 'v'){
+//                     if (newBoard[coord1][coord2] === 0 && newBoard[coord1+1][coord2] === 0 
+//                         && newBoard[coord1+2][coord2] === 0){
+//                         return true;
+//                     } else {
+//                         return false;
+//                     }
+//                 }
+//             case 4:
+//                 if (orientation == 'h'){
+//                     if (newBoard[coord1][coord2] === 0 && newBoard[coord1][coord2+1] === 0 
+//                         && newBoard[coord1][coord2+2] === 0 && newBoard[coord1][coord2+3] === 0){
+//                         return true;
+//                     } else {
+//                         return false;
+//                     }
+//                 } else if (orientation == 'v'){
+//                     if (newBoard[coord1][coord2] === 0 && newBoard[coord1+1][coord2] === 0
+//                         && newBoard[coord1+2][coord2] === 0 && newBoard[coord1+3][coord2] === 0){
+//                         return true;
+//                     } else {
+//                         return false;
+//                     }
+//                 }    
+//             }
+//     }    
+
+// }
 
 function eventListeners(){
     let newGameButton = document.querySelector('#new-game');
