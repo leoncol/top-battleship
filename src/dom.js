@@ -2,6 +2,9 @@ import {Gameboard} from "./gameboard"
 import {Player} from "./player"
 import {Ship} from "./ship"
 
+let humanPlayer = Player('human');
+let computerPlayer = Player('computer');
+
 
 
 function generateHtmlBoard(boardType){
@@ -39,12 +42,10 @@ function generateBoards(){
 }
 
 function gameController(){
-    let humanPlayer = Player('human');
-    let computerPlayer = Player('computer');
     populateGameboards(humanPlayer, computerPlayer);
     displayShips(humanPlayer.myGameboard, 'A');
     displayShips(computerPlayer.myGameboard, 'B');
-    turnController(humanPlayer.typeOfPlayer, computerPlayer.typeOfPlayer);
+    boardEventListeners();
     
 }
 
@@ -77,72 +78,105 @@ function populateGameboards(human, computer){
 
 }
 
-function turnController(humanPlayer, computerPlayer){
-    activateListeners(humanPlayer);
-    activateListeners(computerPlayer);
-
-}
-
-function activateListeners(player){
-    if (player == 'human'){
-        boardAEventListeners('A');
-    } else {
-        boardAEventListeners('B');
-    }
-}
-
 let playerCanAttack = true;
-let computerCanAttack = false;
 
 function handleClick(event) {
-    if (!playerCanAttack && computerCanAttack){
-        console.log(event.target);
-        console.log('this is computer turn, next one is human');
-        gameTurns('human')
-        return
-    } 
-    
-    if (!computerCanAttack && playerCanAttack){
-        console.log(event.target);
-        console.log('this is human turn, next one is computer');
-        gameTurns('computer')
-        return
-    };
-    
-    
+    if (!playerCanAttack) return;
+    let boardSquare = event.target;
+    attackShip(boardSquare)
+   
 }
+
+function attackShip(boardSquare){
+    let computerBoard = computerPlayer.myGameboard;
+    let targetClasses = boardSquare.classList;
+    let coords = boardSquare.id;
+    coords = coords.split('');
+    let coord1 = coords[1];
+    let coord2 = coords[2];
+    coord1 = parseFloat(coord1);
+    coord2 = parseFloat(coord2);
+
+    if (targetClasses[1]){        
+        computerBoard.receiveAttack(coord1, coord2)
+        targetClasses.add(`ship`);
+        let indicateHit = document.createElement('div');
+        indicateHit.textContent = 'X';
+        indicateHit.classList.add('hit');
+        boardSquare.appendChild(indicateHit);
+        let fleetState = computerBoard.isTheFleetSunk();
+        console.log(`Is the fleet sunk? ${fleetState}`);
+        gameTurns('human');
+    } else {
+        let indicateHit = document.createElement('span');
+        indicateHit.classList.add('nohit');
+        boardSquare.appendChild(indicateHit);
+        let fleetState = computerBoard.isTheFleetSunk();
+        console.log(`Is the fleet sunk? ${fleetState}`);
+        gameTurns('computer');
+
+    }
+    
+       
+}
+
+// The game is played against the computer, so make the ‘computer’ 
+// players capable of making random plays. The computer does not have to 
+// be smart, but it should know whether or not a given move is legal 
+// (i.e. it shouldn’t shoot the same coordinate twice).
+
+function computerTurn(){
+
+}
+
+function computerAttacks(){
+    let humanBoard = humanPlayer.myGameboard;
+    let coord1 = Math.floor(Math.random() * 10);
+    let coord2 = Math.floor(Math.random() * 10);
+    let attack = humanBoard.receiveAttack(coord1, coord2)
+    
+    if (attack != 'x'){
+        let boardSquare = document.querySelector(`B${coord1}${coord2}`);
+        targetClasses.add(`ship`);
+        let indicateHit = document.createElement('div');
+        indicateHit.textContent = 'X';
+        indicateHit.classList.add('hit');
+        boardSquare.appendChild(indicateHit);
+        let fleetState = computerBoard.isTheFleetSunk();
+        console.log(`Is the fleet sunk? ${fleetState}`);
+        gameTurns('human');
+    } else {
+        let indicateHit = document.createElement('span');
+        indicateHit.classList.add('nohit');
+        boardSquare.appendChild(indicateHit);
+        let fleetState = computerBoard.isTheFleetSunk();
+        console.log(`Is the fleet sunk? ${fleetState}`);
+        gameTurns('computer');
+
+    }
+    
+       
+}
+
 
 function gameTurns(player){
     if (player == 'human'){
-        computerCanAttack = false;
         playerCanAttack = true;
     } else {
         playerCanAttack = false
-        computerCanAttack = true;
+        console.log('computer turn');
     }
 }
 
-function boardAEventListeners(board){
-    const boardPositions = document.querySelectorAll(`.${board}-game-position`);
+function boardEventListeners(){
+    const boardPositions = document.querySelectorAll(`.B-game-position`);
     boardPositions.forEach(position => {
         position.addEventListener('click', (event) => {
             handleClick(event);
         })
-    })
+    });
 }
 
-// // 1. Select all elements with the class ".my-button"
-// const buttons = document.querySelectorAll('.my-button');
-
-// // 2. Loop through the NodeList and attach the listener to each
-// buttons.forEach(button => {
-//   button.addEventListener('click', (event) => {
-//     // "event.target" refers to the specific button that was clicked
-//     console.log('Clicked element text:', event.target.textContent);
-//   });
-// });
-
-function boardBEventListeners(){}
 
 function displayShips(newBoard, type){
     let ships = [];
@@ -153,16 +187,15 @@ function displayShips(newBoard, type){
             let shipPart = board[i][x];
             if (shipPart != 0){
             ships.push(shipPart);
-            let yIndex = board.indexOf(board[i]);
-            let xIndex = board[i];
-            xIndex = xIndex.indexOf(xIndex[x]);
+            let yIndex = i;
+            let xIndex = x;
             let shipIndex = [];
             shipIndex.push(yIndex,xIndex);
             shipsIndexes.push(shipIndex);
             
 
         }
-        } // fix this loop, it shouldn't go up to 99
+        } 
     }
     colorBoard(shipsIndexes, type);
 
@@ -171,12 +204,24 @@ function displayShips(newBoard, type){
 
 function colorBoard(shipIndexes, type){
 
-for (let i = 0; i <= shipIndexes.length -1; i++){
-    let id = shipIndexes[i];
-    id = String(id[0])+String(id[1]);
-    let shipPart = document.getElementById(`${type}${id}`);
-    shipPart.classList.add(`ship`);
-}
+    if (type == 'A'){
+        for (let i = 0; i <= shipIndexes.length -1; i++){
+            let id = shipIndexes[i];
+            id = String(id[0])+String(id[1]);
+            let shipPart = document.getElementById(`${type}${id}`);
+            shipPart.classList.add(`ship`);
+        }
+    }
+    
+    if (type == 'B'){
+        for (let i = 0; i <= shipIndexes.length -1; i++){
+            let id = shipIndexes[i];
+            id = String(id[0])+String(id[1]);
+            let shipPart = document.getElementById(`${type}${id}`);
+            shipPart.classList.add(`computer-ship`);
+        }
+    }
+
     
 }    
 
