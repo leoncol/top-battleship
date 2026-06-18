@@ -138,9 +138,9 @@ function computerAttacks(){
     
     if (attack != 'x'){
         let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
-        let previousHit = document.querySelector('.hit');
-        if (boardSquare.contains(previousHit)){
+        if (boardSquare.hasChildNodes()){
             computerAttacks();
+            return;
         }
         let indicateHit = document.createElement('div');
         indicateHit.textContent = 'X';
@@ -148,11 +148,13 @@ function computerAttacks(){
         boardSquare.appendChild(indicateHit);
         let fleetState = humanBoard.isTheFleetSunk();
         console.log(`Is the fleet sunk? ${fleetState}`);
-        computerAttacksDelayed();
+        computerAttacksDelayed(1,coord1, coord2 );
     } else {
         let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
+        console.log(boardSquare.hasChildNodes())
         if (boardSquare.hasChildNodes()){
-            computerAttacks();
+            computerAttacksDelayed(0);
+            return;
         }
         let indicateHit = document.createElement('span');
         indicateHit.classList.add('nohit');
@@ -166,17 +168,95 @@ function computerAttacks(){
        
 }
 
+function computerAttacksNearby(previousCoords1, previousCoords2){
+    let humanBoard = humanPlayer.myGameboard;
+    let newCoords1 = 0;
+    let newCoords2 = 0;
+    let decideOrientation = Math.floor(Math.random() * 2);
+    if (decideOrientation == 0){ // vertical
+        if (previousCoords1 == 0){
+            newCoords1 = 1; // if the vertical coords are 0, we cannot go lower
+            newCoords2 = previousCoords2;
+        } else if (previousCoords1 == 9){
+            newCoords1 = 8; // if the vertical coords are 9, we cannot go higher
+            newCoords2 = previousCoords2;
+        } else {
+            let decideMovement = Math.floor(Math.random() * 2); // decide if the movement is forward or backward
+            if (decideMovement == 0){
+            newCoords1 = previousCoords1 - 1;
+            newCoords2 = previousCoords2;
+            } else {
+            newCoords1 = previousCoords1 + 1;
+            newCoords2 = previousCoords2;
+            }
+        }
+    } else if (decideOrientation == 1){ // horizontal
+        if (previousCoords2 == 0){
+            newCoords2 = 1; // if the vertical coords are 0, we cannot go lower
+            newCoords1 = previousCoords1;
+        } else if (previousCoords2 == 9){
+            newCoords2 = 8; // if the vertical coords are 9, we cannot go higher
+            newCoords1 = previousCoords1;
+        } else {
+            let decideMovement = Math.floor(Math.random() * 2); // decide if the movement is forward or backward
+            if (decideMovement == 0){
+            newCoords2 = previousCoords2 - 1;
+            newCoords1 = previousCoords1;
+            } else {
+            newCoords2 = previousCoords2 + 1;
+            newCoords1 = previousCoords1;
+            }
+        }
+    } 
+   
+    let attack = humanBoard.receiveAttack(newCoords1, newCoords2);
+    console.log(attack);
+    
+    if (attack != 'x'){
+        let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
+        if (boardSquare.hasChildNodes()){
+            computerAttacks();
+            return;
+        }
+        let indicateHit = document.createElement('div');
+        indicateHit.textContent = 'X';
+        indicateHit.classList.add('hit');
+        boardSquare.appendChild(indicateHit);
+        let fleetState = humanBoard.isTheFleetSunk();
+        console.log(`Is the fleet sunk? ${fleetState}`);
+        computerAttacksDelayed(1,newCoords2, newCoords2 );
+    } else {
+        let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
+        console.log(boardSquare.hasChildNodes())
+        if (boardSquare.hasChildNodes()){
+            computerAttacksDelayed(1,newCoords2, newCoords2 );
+            return;
+        }
+        let indicateHit = document.createElement('span');
+        indicateHit.classList.add('nohit');
+        boardSquare.appendChild(indicateHit);
+        let fleetState = humanBoard.isTheFleetSunk();
+        console.log(`Is the fleet sunk? ${fleetState}`);
+        gameTurns('human');
+
+    }
+}
+
 // 1. Create a reusable delay function
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // 2. Use it inside an async function
-async function computerAttacksDelayed() {
+async function computerAttacksDelayed(type, previousCoords1, previousCoords2) { // 0 = not continuous // 1 = continuous
   console.log("Thinking...");
   
   // Wait for 3000 milliseconds (3 seconds)
   await delay(0); 
+  if (type == 0){
+    computerAttacks();
+  } else {
+    computerAttacksNearby(previousCoords1, previousCoords2);
+  }
   
-  computerAttacks();
 }
 
 
@@ -186,7 +266,7 @@ function gameTurns(player){
         playerCanAttack = true;
     } else {
         playerCanAttack = false
-        computerAttacksDelayed();
+        computerAttacksDelayed(0);
     }
 }
 
