@@ -133,30 +133,52 @@ function computerAttacks(){
     let humanBoard = humanPlayer.myGameboard;
     let coord1 = Math.floor(Math.random() * 10);
     let coord2 = Math.floor(Math.random() * 10);
-    let attack = humanBoard.receiveAttack(coord1, coord2)
+    let attack = humanBoard.receiveAttack(coord1, coord2);
+    console.log(attack);
     
     if (attack != 'x'){
-        let boardSquare = document.querySelector(`B${coord1}${coord2}`);
-        targetClasses.add(`ship`);
+        let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
+        let previousHit = document.querySelector('.hit');
+        if (boardSquare.contains(previousHit)){
+            computerAttacks();
+        }
         let indicateHit = document.createElement('div');
         indicateHit.textContent = 'X';
         indicateHit.classList.add('hit');
         boardSquare.appendChild(indicateHit);
-        let fleetState = computerBoard.isTheFleetSunk();
+        let fleetState = humanBoard.isTheFleetSunk();
         console.log(`Is the fleet sunk? ${fleetState}`);
-        gameTurns('human');
+        computerAttacksDelayed();
     } else {
+        let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
+        if (boardSquare.hasChildNodes()){
+            computerAttacks();
+        }
         let indicateHit = document.createElement('span');
         indicateHit.classList.add('nohit');
         boardSquare.appendChild(indicateHit);
-        let fleetState = computerBoard.isTheFleetSunk();
+        let fleetState = humanBoard.isTheFleetSunk();
         console.log(`Is the fleet sunk? ${fleetState}`);
-        gameTurns('computer');
+        gameTurns('human');
 
     }
     
        
 }
+
+// 1. Create a reusable delay function
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// 2. Use it inside an async function
+async function computerAttacksDelayed() {
+  console.log("Thinking...");
+  
+  // Wait for 3000 milliseconds (3 seconds)
+  await delay(0); 
+  
+  computerAttacks();
+}
+
 
 
 function gameTurns(player){
@@ -164,7 +186,7 @@ function gameTurns(player){
         playerCanAttack = true;
     } else {
         playerCanAttack = false
-        console.log('computer turn');
+        computerAttacksDelayed();
     }
 }
 

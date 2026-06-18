@@ -57,7 +57,7 @@ function Gameboard() {
         } else {
             let attack = 'x';
             let ship = newBoard[coord1][coord2];
-            if (ship === 0){
+            if (ship === 0 || ship == 'x'){
                 newBoard[coord1][coord2] = attack;
                 return attack;
             } else {
