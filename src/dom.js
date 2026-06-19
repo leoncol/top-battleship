@@ -11,7 +11,11 @@ function generateHtmlBoard(boardType){
    
     let board = document.querySelector('#gameboards');
     let newBoard = document.createElement('div');
-    newBoard.id = `gameboard`;
+    if (boardType == 'A'){
+        newBoard.id = `A-gameboard`;
+    } else {
+        newBoard.id = `B-gameboard`;
+    }
         for (let i = 0; i <= 9; i++){
             for (let x = 0; x <= 9; x++){
                 let square = document.createElement('div');
@@ -49,6 +53,31 @@ function gameController(){
     
 }
 
+function gameEnd(winner){
+    if (winner == 'computer'){
+        alert(`The game is over, the winner is the ${winner}`);
+        alert(`To start a new game, click on the "Start a new game button"`)
+    } else {
+        alert(`The game is over, you are the winner`);
+        alert(`To start a new game, click on the "Start a new game button"`)
+    }
+
+    endGameActions();
+    
+}
+
+function endGameActions(){
+    let playerGameboard = document.querySelector(`#A-gameboard`);
+    let computerGameboard = document.querySelector(`#B-gameboard`);
+
+    let aBoardClasses = playerGameboard.classList;
+    let bBoardClasses = computerGameboard.classList;
+    
+
+    aBoardClasses.add(`unselectable`);
+    bBoardClasses.add(`unselectable`);
+}
+
 //4 1-square ships, 3 2-squares ships (1 h, 2 v), 2 3-squares ship (2 h), 1 4-squares ship (1 v)
 
 function populateGameboards(human, computer){
@@ -64,18 +93,50 @@ function populateGameboards(human, computer){
     humanGameboard.placeShip(3,2,3,'h');
     humanGameboard.placeShip(4,0,7,'v');
 
-    let computerGameboard = computer.myGameboard;
-    computerGameboard.placeShip(1,0,0);
-    computerGameboard.placeShip(1,9,9);
-    computerGameboard.placeShip(1,5,5);
-    computerGameboard.placeShip(1,0,9);
-    computerGameboard.placeShip(2,3,0,'v');
-    computerGameboard.placeShip(2,3,9,'v');
-    computerGameboard.placeShip(2,9,0,'h');
-    computerGameboard.placeShip(3,7,7,'h');
-    computerGameboard.placeShip(3,2,3,'h');
-    computerGameboard.placeShip(4,0,7,'v');
+    placeComputerShips(computer);
+}
 
+function placeComputerShips(computer){
+
+    let computerGameboard = computer.myGameboard;
+
+    
+    for (let i = 0; i <= 3; i++){
+        let coord1 = Math.floor(Math.random() * 10);
+        let coord2 = Math.floor(Math.random() * 10);
+        computerGameboard.placeShip(1,coord1,coord2);
+    }
+
+    for (let i = 0; i <= 2; i++){
+        let orientation = decideOrientation();
+        let coord1 = Math.floor(Math.random() * 10);
+        let coord2 = Math.floor(Math.random() * 10);
+        computerGameboard.placeShip(2,coord1,coord2, orientation);
+    }
+
+    for (let i = 0; i <= 1; i++){
+        let orientation = decideOrientation();
+        let coord1 = Math.floor(Math.random() * 10);
+        let coord2 = Math.floor(Math.random() * 10);
+        computerGameboard.placeShip(3,coord1,coord2, orientation);
+    }
+
+    let orientation = decideOrientation();
+    let coord1 = Math.floor(Math.random() * 10);
+    let coord2 = Math.floor(Math.random() * 10);
+    computerGameboard.placeShip(4,coord1,coord2, orientation);
+
+    function decideOrientation(){
+        let decideOrientation = Math.floor(Math.random() * 2);
+        if (decideOrientation == 0){
+            decideOrientation = 'v';
+        } else {
+            decideOrientation = 'h'
+        }
+
+        return decideOrientation;
+    }
+    
 }
 
 let playerCanAttack = true;
@@ -104,16 +165,19 @@ function attackShip(boardSquare){
         indicateHit.textContent = 'X';
         indicateHit.classList.add('hit');
         boardSquare.appendChild(indicateHit);
+        boardSquare.style.pointerEvents = "none";
         let fleetState = computerBoard.isTheFleetSunk();
-        console.log(`Is the fleet sunk? ${fleetState}`);
-        gameTurns('human');
+        if (fleetState){
+            gameEnd('human');
+        } else {
+            gameTurns('human');
+        }
     } else {
         let indicateHit = document.createElement('span');
         indicateHit.classList.add('nohit');
         boardSquare.appendChild(indicateHit);
-        let fleetState = computerBoard.isTheFleetSunk();
-        console.log(`Is the fleet sunk? ${fleetState}`);
-        gameTurns('computer');
+        boardSquare.style.pointerEvents = "none";
+        gameTurns('computer', 0);
 
     }
     
@@ -147,8 +211,12 @@ function computerAttacks(){
         indicateHit.classList.add('hit');
         boardSquare.appendChild(indicateHit);
         let fleetState = humanBoard.isTheFleetSunk();
-        console.log(`Is the fleet sunk? ${fleetState}`);
-        computerAttacksDelayed(1,coord1, coord2 );
+        if (fleetState){
+            gameEnd('computer');
+        } else {
+            gameTurns('computer', 1, coord1, coord2);
+        }
+        // computerAttacksDelayed(1,coord1, coord2 );
     } else {
         let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
         console.log(boardSquare.hasChildNodes())
@@ -223,8 +291,13 @@ function computerAttacksNearby(previousCoords1, previousCoords2){
         indicateHit.classList.add('hit');
         boardSquare.appendChild(indicateHit);
         let fleetState = humanBoard.isTheFleetSunk();
-        console.log(`Is the fleet sunk? ${fleetState}`);
-        computerAttacksDelayed(1,newCoords2, newCoords2 );
+        if (fleetState){
+            gameEnd('computer');
+        } else {
+            gameTurns('computer', 1, newCoords1, newCoords2);
+        }
+        // console.log(`Is the fleet sunk? ${fleetState}`);
+        // computerAttacksDelayed(1,newCoords2, newCoords2 );
     } else {
         let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
         console.log(boardSquare.hasChildNodes())
@@ -235,8 +308,6 @@ function computerAttacksNearby(previousCoords1, previousCoords2){
         let indicateHit = document.createElement('span');
         indicateHit.classList.add('nohit');
         boardSquare.appendChild(indicateHit);
-        let fleetState = humanBoard.isTheFleetSunk();
-        console.log(`Is the fleet sunk? ${fleetState}`);
         gameTurns('human');
 
     }
@@ -261,12 +332,15 @@ async function computerAttacksDelayed(type, previousCoords1, previousCoords2) { 
 
 
 
-function gameTurns(player){
+function gameTurns(player, type, coord1, coord2){
     if (player == 'human'){
         playerCanAttack = true;
-    } else {
+    } else if (player == 'computer' && type == 0) {
         playerCanAttack = false
         computerAttacksDelayed(0);
+    } else {
+        playerCanAttack = false;
+        computerAttacksDelayed(1, coord1, coord2);
     }
 }
 

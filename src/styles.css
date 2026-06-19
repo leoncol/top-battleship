@@ -23,7 +23,7 @@ html, body {
 }
 
 
-#gameboard {
+#A-gameboard, #B-gameboard {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -73,4 +73,10 @@ html, body {
     height: 10px;
     background-color: #000000; /* Change to your preferred color */
     border-radius: 50%;        /* Makes the square a perfect circle */
+}
+
+.unselectable {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
 }
