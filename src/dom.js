@@ -121,10 +121,14 @@ function placeComputerShips(computer){
         computerGameboard.placeShip(3,coord1,coord2, orientation);
     }
 
-    let orientation = decideOrientation();
-    let coord1 = Math.floor(Math.random() * 10);
-    let coord2 = Math.floor(Math.random() * 10);
-    computerGameboard.placeShip(4,coord1,coord2, orientation);
+    for (let i = 0; i < 1; i++){
+        let orientation = decideOrientation();
+        let coord1 = Math.floor(Math.random() * 10);
+        let coord2 = Math.floor(Math.random() * 10);
+        computerGameboard.placeShip(4,coord1,coord2, orientation);
+    }
+
+   
 
     function decideOrientation(){
         let decideOrientation = Math.floor(Math.random() * 2);

@@ -239,7 +239,7 @@ function Gameboard() {
 
 
 
-    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, newBoard}
+    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, isFree, newBoard}
     }
    
 // module.exports = Gameboard;
