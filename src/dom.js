@@ -94,6 +94,9 @@ function populateGameboards(human, computer){
     humanGameboard.placeShip(4,0,7,'v');
 
     placeComputerShips(computer);
+
+    console.log(humanGameboard);
+    console.log(computer.myGameboard);
 }
 
 function placeComputerShips(computer){
@@ -104,28 +107,40 @@ function placeComputerShips(computer){
     for (let i = 0; i <= 3; i++){
         let coord1 = Math.floor(Math.random() * 10);
         let coord2 = Math.floor(Math.random() * 10);
-        computerGameboard.placeShip(1,coord1,coord2);
+        let placeShip = computerGameboard.placeShip(1,coord1,coord2);
+        if (typeof placeShip  == 'string'){
+            i--;
+        };
     }
 
     for (let i = 0; i <= 2; i++){
         let orientation = decideOrientation();
         let coord1 = Math.floor(Math.random() * 10);
         let coord2 = Math.floor(Math.random() * 10);
-        computerGameboard.placeShip(2,coord1,coord2, orientation);
+        let placeShip = computerGameboard.placeShip(2,coord1,coord2, orientation);
+        if (typeof placeShip  == 'string'){
+            i--;
+        };
     }
 
     for (let i = 0; i <= 1; i++){
         let orientation = decideOrientation();
         let coord1 = Math.floor(Math.random() * 10);
         let coord2 = Math.floor(Math.random() * 10);
-        computerGameboard.placeShip(3,coord1,coord2, orientation);
+        let placeShip = computerGameboard.placeShip(3,coord1,coord2, orientation);
+        if (typeof placeShip  == 'string'){
+            i--;
+        };
     }
 
     for (let i = 0; i < 1; i++){
         let orientation = decideOrientation();
         let coord1 = Math.floor(Math.random() * 10);
         let coord2 = Math.floor(Math.random() * 10);
-        computerGameboard.placeShip(4,coord1,coord2, orientation);
+        let placeShip = computerGameboard.placeShip(4,coord1,coord2, orientation);
+        if (typeof placeShip  == 'string'){
+            i--;
+        };
     }
 
    
@@ -398,7 +413,8 @@ function colorBoard(shipIndexes, type){
             let id = shipIndexes[i];
             id = String(id[0])+String(id[1]);
             let shipPart = document.getElementById(`${type}${id}`);
-            shipPart.classList.add(`computer-ship`);
+            // shipPart.classList.add(`computer-ship`); we're going to use the ship class just to make it visible temporarily
+            shipPart.classList.add(`ship`);
         }
     }
 
