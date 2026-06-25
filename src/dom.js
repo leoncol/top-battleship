@@ -95,8 +95,7 @@ function populateGameboards(human, computer){
 
     placeComputerShips(computer);
 
-    console.log(humanGameboard);
-    console.log(computer.myGameboard);
+    
 }
 
 function placeComputerShips(computer){
@@ -217,7 +216,6 @@ function computerAttacks(){
     let coord1 = Math.floor(Math.random() * 10);
     let coord2 = Math.floor(Math.random() * 10);
     let attack = humanBoard.receiveAttack(coord1, coord2);
-    console.log(attack);
     
     if (attack != 'x'){
         let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
@@ -238,7 +236,6 @@ function computerAttacks(){
         // computerAttacksDelayed(1,coord1, coord2 );
     } else {
         let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
-        console.log(boardSquare.hasChildNodes())
         if (boardSquare.hasChildNodes()){
             computerAttacksDelayed(0);
             return;
@@ -247,7 +244,6 @@ function computerAttacks(){
         indicateHit.classList.add('nohit');
         boardSquare.appendChild(indicateHit);
         let fleetState = humanBoard.isTheFleetSunk();
-        console.log(`Is the fleet sunk? ${fleetState}`);
         gameTurns('human');
 
     }
@@ -297,7 +293,7 @@ function computerAttacksNearby(previousCoords1, previousCoords2){
     } 
    
     let attack = humanBoard.receiveAttack(newCoords1, newCoords2);
-    console.log(attack);
+    
     
     if (attack != 'x'){
         let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
@@ -319,7 +315,7 @@ function computerAttacksNearby(previousCoords1, previousCoords2){
         // computerAttacksDelayed(1,newCoords2, newCoords2 );
     } else {
         let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
-        console.log(boardSquare.hasChildNodes())
+        
         if (boardSquare.hasChildNodes()){
             computerAttacksDelayed(1,newCoords2, newCoords2 );
             return;
@@ -337,14 +333,15 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // 2. Use it inside an async function
 async function computerAttacksDelayed(type, previousCoords1, previousCoords2) { // 0 = not continuous // 1 = continuous
-  console.log("Thinking...");
   
   // Wait for 3000 milliseconds (3 seconds)
   await delay(0); 
   if (type == 0){
     computerAttacks();
+    console.log(computerPlayer.myGameboard.newBoard);
   } else {
     computerAttacksNearby(previousCoords1, previousCoords2);
+    console.log(computerPlayer.myGameboard.newBoard);
   }
   
 }
