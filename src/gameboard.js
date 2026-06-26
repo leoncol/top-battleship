@@ -237,9 +237,65 @@ function Gameboard() {
         }
     }
 
+    let generateShipCoords = function (){
+
+        for (let i = 0; i <= 3; i++){
+            let coord1 = Math.floor(Math.random() * 10);
+            let coord2 = Math.floor(Math.random() * 10);
+            let placeShip = placeShip(1,coord1,coord2);
+            if (typeof placeShip  == 'string'){
+                i--;
+            };
+        }
+    
+        for (let i = 0; i <= 2; i++){
+            let orientation = decideOrientation();
+            let coord1 = Math.floor(Math.random() * 10);
+            let coord2 = Math.floor(Math.random() * 10);
+            let placeShip = placeShip(2,coord1,coord2, orientation);
+            if (typeof placeShip  == 'string'){
+                i--;
+            };
+        }
+    
+        for (let i = 0; i <= 1; i++){
+            let orientation = decideOrientation();
+            let coord1 = Math.floor(Math.random() * 10);
+            let coord2 = Math.floor(Math.random() * 10);
+            let placeShip = placeShip(3,coord1,coord2, orientation);
+            if (typeof placeShip  == 'string'){
+                i--;
+            };
+        }
+    
+        for (let i = 0; i < 1; i++){
+            let orientation = decideOrientation();
+            let coord1 = Math.floor(Math.random() * 10);
+            let coord2 = Math.floor(Math.random() * 10);
+            let placeShip = placeShip(4,coord1,coord2, orientation);
+            if (typeof placeShip  == 'string'){
+                i--;
+            };
+        }
+    
+       
+    
+        function decideOrientation(){
+            let decideOrientation = Math.floor(Math.random() * 2);
+            if (decideOrientation == 0){
+                decideOrientation = 'v';
+            } else {
+                decideOrientation = 'h'
+            }
+    
+            return decideOrientation;
+        }
+        
+    }
 
 
-    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, isFree, newBoard}
+
+    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, isFree, generateShipCoords, newBoard}
     }
    
 // module.exports = Gameboard;
