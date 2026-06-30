@@ -114,12 +114,18 @@ function Gameboard() {
         }
     }
 
-    let isFree = function (size, coord1, coord2, orientation){
+    let isFreeAround = function (size, coord1, coord2, orientation){
         switch (size) {
             case 1:
-                if (newBoard[coord1][coord2] === 0){
+                if ((newBoard[coord1+1][coord2] === 0 && newBoard[coord1-1][coord2] === 0)
+                && (newBoard[coord1][coord2+1] === 0 && newBoard[coord1][coord2-1] === 0)){
                     return true;
-                } else {
+                } else if (newBoard[coord1-1][coord2] == undefined && newBoard[coord1][coord2-1] == undefined
+                    && newBoard[coord1+1][coord2] === 0 && newBoard[coord1][coord2+1] === 0){
+                    return true;
+                } else if (newBoard[coord1+1][coord2] == undefined && newBoard[coord1][coord2+1] == undefined
+                    && newBoard[coord1+1][coord2] === 0 && newBoard[coord1][coord2+1] === 0)
+                {
                     return false;
                 }
             case 2:
@@ -181,8 +187,6 @@ function Gameboard() {
             return 'Invalid orientation'; // test orientation --  evaluate when ship is out of bounds;
         } else if (isInBounds(size, coord1, coord2, orientation) == false){
             return 'Invalid placement. Ship out of bounds.';
-        } else if (isFree(size, coord1, coord2, orientation) == false){
-            return 'Invalid placement. Position taken'; 
         } else {
             let newShip = createShip(size);
             let fullShip = [];
@@ -244,6 +248,7 @@ function Gameboard() {
             let coord2 = Math.floor(Math.random() * 10);
             let placeThisShip = placeShip(1,coord1,coord2);;
             // placeThisShip = placeShip(1,coord1,coord2);
+            let isItFreeAround = isFreeAround(size, coord1, coord2, orientation) == false
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
