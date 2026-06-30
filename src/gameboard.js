@@ -117,17 +117,62 @@ function Gameboard() {
     let isFreeAround = function (size, coord1, coord2, orientation){
         switch (size) {
             case 1:
-                if ((newBoard[coord1+1][coord2] === 0 && newBoard[coord1-1][coord2] === 0)
+                if (coord1 == 0 && coord2 == 0){
+                    if (newBoard[coord1+1][coord2] == 0 && newBoard[coord1][coord2+1] == 0
+                        && newBoard[coord1+1][coord2+1] == 0){
+                        return true
+                    }
+                } else if (coord1 == 0 && coord2 == 9){
+                    if (newBoard[coord1][coord2-1] == 0 && newBoard[coord1+1][coord2] == 0
+                        && newBoard[coord1+1][coord2-1] == 0){
+                        return true
+                    }
+                } else if (coord1 == 9 && coord2 == 0){
+                    if (newBoard[coord1-1][coord2] == 0 && newBoard[coord1][coord2+1] == 0
+                        && newBoard[coord1-1][coord2+1] == 0){
+                        return true
+                    }
+                } else if (coord1 == 9 && coord2 == 9){
+                    if (newBoard[coord1-1][coord2] == 0 && newBoard[coord1][coord2-1] == 0
+                        && newBoard[coord1-1][coord2-1] == 0){
+                        return true
+                    }
+                } else if(coord1 == 0){
+                    if (newBoard[coord1+1][coord2] == 0){
+                        return true
+                    }
+                } else if (coord1 == 9){
+                    if (newBoard[coord1-1][coord2] == 0){
+                        return true
+                    }
+                } else if(coord2 == 0){
+                    if (newBoard[coord1][coord2+1] == 0){
+                        return true
+                    }
+                } else if (coord2 == 9){
+                    if (newBoard[coord1][coord2-1] == 0){
+                        return true
+                    }      
+                }  else if ((newBoard[coord1+1][coord2] === 0 && newBoard[coord1-1][coord2] === 0)
                 && (newBoard[coord1][coord2+1] === 0 && newBoard[coord1][coord2-1] === 0)){
                     return true;
-                } else if (newBoard[coord1-1][coord2] == undefined && newBoard[coord1][coord2-1] == undefined
-                    && newBoard[coord1+1][coord2] === 0 && newBoard[coord1][coord2+1] === 0){
-                    return true;
-                } else if (newBoard[coord1+1][coord2] == undefined && newBoard[coord1][coord2+1] == undefined
-                    && newBoard[coord1+1][coord2] === 0 && newBoard[coord1][coord2+1] === 0)
-                {
+                } else {
                     return false;
                 }
+                // } else if (newBoard[coord1-1][coord2] == undefined && newBoard[coord1][coord2-1] == undefined
+                //     && newBoard[coord1+1][coord2] === 0 && newBoard[coord1][coord2+1] === 0){
+                //     return true;
+                // } else if (newBoard[coord1+1][coord2] == undefined && newBoard[coord1][coord2+1] == undefined
+                //     && newBoard[coord1-1][coord2] === 0 && newBoard[coord1][coord2-1] === 0){
+                //     return true;
+                // } else if (newBoard[coord1][coord2+1] == undefined && newBoard[coord1-1][coord2] == undefined
+                //     && newBoard[coord1+1][coord2] === 0 && newBoard[coord1][coord2-1] === 0) {
+                //     return true;
+                // } else if (newBoard[coord1+1][coord2] == undefined && newBoard[coord1][coord2-1] == undefined
+                //     && newBoard[coord1-1][coord2] === 0 && newBoard[coord1][coord2+1] === 0){
+                //     return true;
+                // } else 
+                //     return false;
             case 2:
                 if (orientation == 'h'){
                     if (newBoard[coord1][coord2] === 0 && newBoard[coord1][coord2+1] === 0){
@@ -246,12 +291,20 @@ function Gameboard() {
         for (let i = 0; i <= 3; i++){
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let placeThisShip = placeShip(1,coord1,coord2);;
+            let isItFreeAround = isFreeAround(1, coord1, coord2);
+            if (isItFreeAround == false){
+                i--;
+            } else {
+                let placeThisShip = placeShip(1,coord1,coord2);;
             // placeThisShip = placeShip(1,coord1,coord2);
-            let isItFreeAround = isFreeAround(size, coord1, coord2, orientation) == false
+            
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
+            console.log(newBoard[coord1][coord2])
+            console.log(newBoard)
+            }
+            
         }
     
         for (let i = 0; i <= 2; i++){
@@ -303,7 +356,7 @@ function Gameboard() {
 
 
 
-    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, isFree, generateShipCoords, newBoard}
+    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, isFreeAround, generateShipCoords, newBoard}
     }
    
 // module.exports = Gameboard;
