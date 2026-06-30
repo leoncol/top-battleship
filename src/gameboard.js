@@ -242,8 +242,9 @@ function Gameboard() {
         for (let i = 0; i <= 3; i++){
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let placeShip = placeShip(1,coord1,coord2);
-            if (typeof placeShip  == 'string'){
+            let placeThisShip = placeShip(1,coord1,coord2);;
+            // placeThisShip = placeShip(1,coord1,coord2);
+            if (typeof placeThisShip  == 'string'){
                 i--;
             };
         }
@@ -252,8 +253,8 @@ function Gameboard() {
             let orientation = decideOrientation();
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let placeShip = placeShip(2,coord1,coord2, orientation);
-            if (typeof placeShip  == 'string'){
+            let placeThisShip = placeShip(2,coord1,coord2, orientation);
+            if (typeof placeThisShip  == 'string'){
                 i--;
             };
         }
@@ -262,8 +263,8 @@ function Gameboard() {
             let orientation = decideOrientation();
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let placeShip = placeShip(3,coord1,coord2, orientation);
-            if (typeof placeShip  == 'string'){
+            let placeThisShip = placeShip(3,coord1,coord2, orientation);
+            if (typeof placeThisShip  == 'string'){
                 i--;
             };
         }
@@ -272,8 +273,8 @@ function Gameboard() {
             let orientation = decideOrientation();
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let placeShip = placeShip(4,coord1,coord2, orientation);
-            if (typeof placeShip  == 'string'){
+            let placeThisShip = placeShip(4,coord1,coord2, orientation);
+            if (typeof placeThisShip  == 'string'){
                 i--;
             };
         }
@@ -292,6 +293,8 @@ function Gameboard() {
         }
         
     }
+
+    let checkSurroundingCoords = function(){}
 
 
 

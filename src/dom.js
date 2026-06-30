@@ -93,69 +93,69 @@ function populateGameboards(human, computer){
     humanGameboard.placeShip(3,2,3,'h');
     humanGameboard.placeShip(4,0,7,'v');
 
-    placeComputerShips(computer);
+    computer.myGameboard.generateShipCoords()
 
     
 }
 
-function placeComputerShips(computer){
+// function placeComputerShips(computer){
 
-    let computerGameboard = computer.myGameboard;
+//     let computerGameboard = computer.myGameboard;
 
     
-    for (let i = 0; i <= 3; i++){
-        let coord1 = Math.floor(Math.random() * 10);
-        let coord2 = Math.floor(Math.random() * 10);
-        let placeShip = computerGameboard.placeShip(1,coord1,coord2);
-        if (typeof placeShip  == 'string'){
-            i--;
-        };
-    }
+//     for (let i = 0; i <= 3; i++){
+//         let coord1 = Math.floor(Math.random() * 10);
+//         let coord2 = Math.floor(Math.random() * 10);
+//         let placeShip = computerGameboard.placeShip(1,coord1,coord2);
+//         if (typeof placeShip  == 'string'){
+//             i--;
+//         };
+//     }
 
-    for (let i = 0; i <= 2; i++){
-        let orientation = decideOrientation();
-        let coord1 = Math.floor(Math.random() * 10);
-        let coord2 = Math.floor(Math.random() * 10);
-        let placeShip = computerGameboard.placeShip(2,coord1,coord2, orientation);
-        if (typeof placeShip  == 'string'){
-            i--;
-        };
-    }
+//     for (let i = 0; i <= 2; i++){
+//         let orientation = decideOrientation();
+//         let coord1 = Math.floor(Math.random() * 10);
+//         let coord2 = Math.floor(Math.random() * 10);
+//         let placeShip = computerGameboard.placeShip(2,coord1,coord2, orientation);
+//         if (typeof placeShip  == 'string'){
+//             i--;
+//         };
+//     }
 
-    for (let i = 0; i <= 1; i++){
-        let orientation = decideOrientation();
-        let coord1 = Math.floor(Math.random() * 10);
-        let coord2 = Math.floor(Math.random() * 10);
-        let placeShip = computerGameboard.placeShip(3,coord1,coord2, orientation);
-        if (typeof placeShip  == 'string'){
-            i--;
-        };
-    }
+//     for (let i = 0; i <= 1; i++){
+//         let orientation = decideOrientation();
+//         let coord1 = Math.floor(Math.random() * 10);
+//         let coord2 = Math.floor(Math.random() * 10);
+//         let placeShip = computerGameboard.placeShip(3,coord1,coord2, orientation);
+//         if (typeof placeShip  == 'string'){
+//             i--;
+//         };
+//     }
 
-    for (let i = 0; i < 1; i++){
-        let orientation = decideOrientation();
-        let coord1 = Math.floor(Math.random() * 10);
-        let coord2 = Math.floor(Math.random() * 10);
-        let placeShip = computerGameboard.placeShip(4,coord1,coord2, orientation);
-        if (typeof placeShip  == 'string'){
-            i--;
-        };
-    }
+//     for (let i = 0; i < 1; i++){
+//         let orientation = decideOrientation();
+//         let coord1 = Math.floor(Math.random() * 10);
+//         let coord2 = Math.floor(Math.random() * 10);
+//         let placeShip = computerGameboard.placeShip(4,coord1,coord2, orientation);
+//         if (typeof placeShip  == 'string'){
+//             i--;
+//         };
+//     }
 
    
 
-    function decideOrientation(){
-        let decideOrientation = Math.floor(Math.random() * 2);
-        if (decideOrientation == 0){
-            decideOrientation = 'v';
-        } else {
-            decideOrientation = 'h'
-        }
+//     function decideOrientation(){
+//         let decideOrientation = Math.floor(Math.random() * 2);
+//         if (decideOrientation == 0){
+//             decideOrientation = 'v';
+//         } else {
+//             decideOrientation = 'h'
+//         }
 
-        return decideOrientation;
-    }
+//         return decideOrientation;
+//     }
     
-}
+// }
 
 let playerCanAttack = true;
 
@@ -207,9 +207,7 @@ function attackShip(boardSquare){
 // be smart, but it should know whether or not a given move is legal 
 // (i.e. it shouldn’t shoot the same coordinate twice).
 
-function computerTurn(){
 
-}
 
 function computerAttacks(){
     let humanBoard = humanPlayer.myGameboard;
@@ -338,10 +336,8 @@ async function computerAttacksDelayed(type, previousCoords1, previousCoords2) { 
   await delay(0); 
   if (type == 0){
     computerAttacks();
-    console.log(computerPlayer.myGameboard.newBoard);
   } else {
     computerAttacksNearby(previousCoords1, previousCoords2);
-    console.log(computerPlayer.myGameboard.newBoard);
   }
   
 }
