@@ -117,22 +117,22 @@ function Gameboard() {
     let isFreeAround = function (size, coord1, coord2, orientation){
         switch (size) {
             case 1:
-                if (coord1 == 0 && coord2 == 0){
+                if (coord1 == 0 && coord2 == 0){ // upper left corner
                     if (newBoard[coord1+1][coord2] == 0 && newBoard[coord1][coord2+1] == 0
                         && newBoard[coord1+1][coord2+1] == 0){
                         return true
                     }
-                } else if (coord1 == 0 && coord2 == 9){
+                } else if (coord1 == 0 && coord2 == 9){ // upper right corner
                     if (newBoard[coord1][coord2-1] == 0 && newBoard[coord1+1][coord2] == 0
                         && newBoard[coord1+1][coord2-1] == 0){
                         return true
                     }
-                } else if (coord1 == 9 && coord2 == 0){
+                } else if (coord1 == 9 && coord2 == 0){ // lower left corner
                     if (newBoard[coord1-1][coord2] == 0 && newBoard[coord1][coord2+1] == 0
                         && newBoard[coord1-1][coord2+1] == 0){
                         return true
                     }
-                } else if (coord1 == 9 && coord2 == 9){
+                } else if (coord1 == 9 && coord2 == 9){ // lower right corner
                     if (newBoard[coord1-1][coord2] == 0 && newBoard[coord1][coord2-1] == 0
                         && newBoard[coord1-1][coord2-1] == 0){
                         return true
@@ -286,11 +286,50 @@ function Gameboard() {
         }
     }
 
+    let getShipCoords = function (size, coord1, coord2, orientation){
+        let newArray = [];
+        if (orientation == 'v'){
+            for (let i = 0; i < size; i++){
+                let coords = [];
+                coords.push(coord1+i, coord2);
+                newArray.push(coords);
+            }
+        } else  if (orientation == 'h'){
+            for (let i = 0; i < size; i++){
+                let coords = [];
+                coords.push(coord1, coord2+i);
+                newArray.push(coords);
+            }
+        } else {
+            let coords = [];
+            coords.push(coord1, coord2);
+            newArray.push(coords);
+        }
+        
+        return newArray;
+    }
+
+
     let generateShipCoords = function (){
 
+
+            //         Imagine if you had a small utility loop that turned a starting position into an array of coordinate pairs:
+
+            // Input: size: 3, coord1: 2, coord2: 2, orientation: 'h'
+
+            // Output Array: [[2, 2], [2, 3], [2, 4]]
+
+//             1. Create a New Helper: getShipCoordinates(size, coord1, coord2, orientation)
+// Before touching your validation, write a brand new helper function. Its only job is to take the placement parameters and 
+// return an array of all the coordinate pairs the ship will occupy.
+
+// How it helps: Instead of guessing where the ship lives based on it
+// s size, this gives you a predictable array like [[0,1], [0,2], [0,3]]. 
+// You will pass this array into your other functions.
         for (let i = 0; i <= 3; i++){
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
+            getShipCoords
             let isItFreeAround = isFreeAround(1, coord1, coord2);
             if (isItFreeAround == false){
                 i--;
