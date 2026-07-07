@@ -94,24 +94,17 @@ function Gameboard() {
     }
  
 
-    let isInBounds = function(length, coord1, coord2, orientation){ // Check if the subsequent vertical or horizontal slots are in bounds
-        if (length == 1){
-            return true;
-        } else if (length == 2 && orientation == 'h' && newBoard[coord1][coord2+1] !== undefined){
-            return true; // check size 2 horizontally
-        } else if (length == 2 && orientation == 'v' && newBoard[coord1+1] !== undefined){
-            return true; // check size 2 vertically
-        } else if (length == 3 && orientation == 'h' && newBoard[coord1][coord2+1] !== undefined && newBoard[coord1][coord2+2] !== undefined ){
-            return true; //check size 3 horizontally
-        } else if (length == 3 && orientation == 'v' && newBoard[coord1+1] !== undefined && newBoard[coord1+2] !== undefined ){
-            return true; //check size 3 vertically
-        } else if (length == 4 && orientation == 'h' && newBoard[coord1][coord2+1] !== undefined && newBoard[coord1][coord2+2] !== undefined && newBoard[coord1][coord2+3]  !== undefined){
-            return true; //check size 4 horizontally    
-        } else if (length == 4 && orientation == 'v' && newBoard[coord1+1] !== undefined && newBoard[coord1+2] !== undefined && newBoard[coord1+3] !== undefined){
-            return true; //check size 4 vertically    
-        } else {
-            return false;
+    let isInBounds = function(arrayOfCoords){ // Check if the subsequent vertical or horizontal slots are in bounds
+        for (let i = 0; i < arrayOfCoords.length; i ++){
+            let coords = arrayOfCoords[i];
+            let coords1 = coords[0];
+            let coords2 = coords[1];
+            if ((coords1 < 0 || coords1 > 9) || (coords2 < 0 || coords2 > 9)){
+                return false
+            }
         }
+
+        return true;
     }
 
     let isFreeAround = function (size, coord1, coord2, orientation){
@@ -224,15 +217,15 @@ function Gameboard() {
 
 
     let placeShip = function(size, coord1, coord2, orientation){
-        if ((coord1 > 9|| coord2 > 9) ||(coord1 < 0|| coord2 < 0) ){
-            return 'Invalid coords';
-        } else if (size > 4){
-            return 'Invalid size';
-        } else if (size != 1 && orientation != 'h' && orientation != 'v'){
-            return 'Invalid orientation'; // test orientation --  evaluate when ship is out of bounds;
-        } else if (isInBounds(size, coord1, coord2, orientation) == false){
-            return 'Invalid placement. Ship out of bounds.';
-        } else {
+        // if ((coord1 > 9|| coord2 > 9) ||(coord1 < 0|| coord2 < 0) ){
+        //     return 'Invalid coords';
+        // } else if (size > 4){
+        //     return 'Invalid size';
+        // } else if (size != 1 && orientation != 'h' && orientation != 'v'){
+        //     return 'Invalid orientation'; // test orientation --  evaluate when ship is out of bounds;
+        // } else if (isInBounds(size, coord1, coord2, orientation) == false){
+        //     return 'Invalid placement. Ship out of bounds.';
+        // } else {
             let newShip = createShip(size);
             let fullShip = [];
             if (newShip.returnLength() == 1){
@@ -283,7 +276,7 @@ function Gameboard() {
                 myFleet.push(fullShip);
                 return fullShip;
             }
-        }
+        // }
     }
 
     let getShipCoords = function (size, coord1, coord2, orientation){
@@ -329,9 +322,10 @@ function Gameboard() {
         for (let i = 0; i <= 3; i++){
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            getShipCoords
+            let newCoords = getShipCoords(coord1, coord2);
+            
             let isItFreeAround = isFreeAround(1, coord1, coord2);
-            if (isItFreeAround == false){
+            if (isInBounds(newCoords) == false && isItFreeAround == false){
                 i--;
             } else {
                 let placeThisShip = placeShip(1,coord1,coord2);;
