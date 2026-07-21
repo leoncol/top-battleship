@@ -9,12 +9,15 @@ let computerPlayer = Player('computer');
 
 function generateHtmlBoard(boardType){
    
-    let board = document.querySelector('#gameboards');
+    let board = 0;
     let newBoard = document.createElement('div');
     if (boardType == 'A'){
         newBoard.id = `A-gameboard`;
+        board = document.querySelector('#gameboards-a');
+        console.log(board)
     } else {
         newBoard.id = `B-gameboard`;
+        board = document.querySelector('#gameboards-b');
     }
         for (let i = 0; i <= 9; i++){
             for (let x = 0; x <= 9; x++){
@@ -30,6 +33,49 @@ function generateHtmlBoard(boardType){
     
 }
 
+function generateFleetBoard(boardType){
+    let board = 0
+    let newFloatBoard = document.createElement('ol');
+    if (boardType == 'A'){
+        newFloatBoard.id = `A-fleetboard`;
+        board = document.querySelector('#gameboards-a');
+        let oneSquareShip = document.createElement('li');
+        oneSquareShip.id = '1-square-ship'
+        oneSquareShip.textContent = '1-square-ships:'
+        let twoSquareShip = document.createElement('li');
+        twoSquareShip.id = '2-square-ship'
+        twoSquareShip.textContent = '2-square-ships:'
+        let threeSquareShip = document.createElement('li');
+        threeSquareShip.id = '3-square-ship';
+        threeSquareShip.textContent = '3-square-ships:'
+        let fourSquareShip = document.createElement('li');
+        fourSquareShip.id = '4-square-ship';
+        fourSquareShip.textContent = '4-square-ships:'
+        newFloatBoard.append(oneSquareShip,twoSquareShip,threeSquareShip,fourSquareShip);
+        board.appendChild(newFloatBoard);
+    } else {
+        newFloatBoard.id = `B-fleetboard`;
+        board = document.querySelector('#gameboards-b');
+        let oneSquareShip = document.createElement('li');
+        oneSquareShip.id = '1-square-ship'
+        oneSquareShip.textContent = '1-square-ships:'
+        let twoSquareShip = document.createElement('li');
+        twoSquareShip.id = '2-square-ship'
+        twoSquareShip.textContent = '2-square-ships:'
+        let threeSquareShip = document.createElement('li');
+        threeSquareShip.id = '3-square-ship';
+        threeSquareShip.textContent = '3-square-ships:'
+        let fourSquareShip = document.createElement('li');
+        fourSquareShip.id = '4-square-ship';
+        fourSquareShip.textContent = '4-square-ships:'
+        newFloatBoard.append(oneSquareShip,twoSquareShip,threeSquareShip,fourSquareShip);
+        board.appendChild(newFloatBoard);
+    }
+    
+}
+
+
+
 
 export { 
     generateHtmlBoard};
@@ -38,6 +84,8 @@ function generateBoards(){
     // create both gameboards
     generateHtmlBoard('A');
     generateHtmlBoard('B');
+    generateFleetBoard('A');
+    generateFleetBoard('B');
     // Set up a new game by creating Players. For now just populate each player’s Gameboard with 
     // predetermined coordinates. 
     // You are going to implement a system for allowing players to place their ships later.
@@ -81,81 +129,13 @@ function endGameActions(){
 //4 1-square ships, 3 2-squares ships (1 h, 2 v), 2 3-squares ship (2 h), 1 4-squares ship (1 v)
 
 function populateGameboards(human, computer){
-    let humanGameboard = human.myGameboard;
-    humanGameboard.placeShip(1,0,0);
-    humanGameboard.placeShip(1,9,9);
-    humanGameboard.placeShip(1,5,5);
-    humanGameboard.placeShip(1,0,9);
-    humanGameboard.placeShip(2,3,0,'v');
-    humanGameboard.placeShip(2,3,9,'v');
-    humanGameboard.placeShip(2,9,0,'h');
-    humanGameboard.placeShip(3,7,7,'h');
-    humanGameboard.placeShip(3,2,3,'h');
-    humanGameboard.placeShip(4,0,7,'v');
+    human.myGameboard.generateShipCoords();
 
     computer.myGameboard.generateShipCoords()
 
     
 }
 
-// function placeComputerShips(computer){
-
-//     let computerGameboard = computer.myGameboard;
-
-    
-//     for (let i = 0; i <= 3; i++){
-//         let coord1 = Math.floor(Math.random() * 10);
-//         let coord2 = Math.floor(Math.random() * 10);
-//         let placeShip = computerGameboard.placeShip(1,coord1,coord2);
-//         if (typeof placeShip  == 'string'){
-//             i--;
-//         };
-//     }
-
-//     for (let i = 0; i <= 2; i++){
-//         let orientation = decideOrientation();
-//         let coord1 = Math.floor(Math.random() * 10);
-//         let coord2 = Math.floor(Math.random() * 10);
-//         let placeShip = computerGameboard.placeShip(2,coord1,coord2, orientation);
-//         if (typeof placeShip  == 'string'){
-//             i--;
-//         };
-//     }
-
-//     for (let i = 0; i <= 1; i++){
-//         let orientation = decideOrientation();
-//         let coord1 = Math.floor(Math.random() * 10);
-//         let coord2 = Math.floor(Math.random() * 10);
-//         let placeShip = computerGameboard.placeShip(3,coord1,coord2, orientation);
-//         if (typeof placeShip  == 'string'){
-//             i--;
-//         };
-//     }
-
-//     for (let i = 0; i < 1; i++){
-//         let orientation = decideOrientation();
-//         let coord1 = Math.floor(Math.random() * 10);
-//         let coord2 = Math.floor(Math.random() * 10);
-//         let placeShip = computerGameboard.placeShip(4,coord1,coord2, orientation);
-//         if (typeof placeShip  == 'string'){
-//             i--;
-//         };
-//     }
-
-   
-
-//     function decideOrientation(){
-//         let decideOrientation = Math.floor(Math.random() * 2);
-//         if (decideOrientation == 0){
-//             decideOrientation = 'v';
-//         } else {
-//             decideOrientation = 'h'
-//         }
-
-//         return decideOrientation;
-//     }
-    
-// }
 
 let playerCanAttack = true;
 
@@ -406,8 +386,8 @@ function colorBoard(shipIndexes, type){
             let id = shipIndexes[i];
             id = String(id[0])+String(id[1]);
             let shipPart = document.getElementById(`${type}${id}`);
-            // shipPart.classList.add(`computer-ship`); we're going to use the ship class just to make it visible temporarily
-            shipPart.classList.add(`ship`);
+            shipPart.classList.add(`computer-ship`);
+            // shipPart.classList.add(`ship`);
         }
     }
 
