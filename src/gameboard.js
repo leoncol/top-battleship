@@ -108,17 +108,26 @@ function Gameboard() {
     }
 
     let isFreeAround = function (arrayOfCoords){
-        for (let i = 0; i < arrayOfCoords.length; i ++){
+        
+        for (let i = 0; i <= arrayOfCoords.length - 1; i++){
             let coords = arrayOfCoords[i];
             let coords1 = coords[0];
             let coords2 = coords[1];
-            if ((coords1 < 0 || coords1 > 9) || (coords2 < 0 || coords2 > 9)){
-                return false
+            for (let colOffSet = -1; colOffSet <= 1; colOffSet++){
+                for (let rowOffSet = -1; rowOffSet <= 1; rowOffSet++){
+                    let realBoardPosition1 = coords1+colOffSet;
+                    let realBoardPosition2 = coords2+rowOffSet;
+                    let realBoardFullCoords = newBoard[realBoardPosition1]?.[realBoardPosition2];
+                    if (realBoardFullCoords != 0 && realBoardFullCoords != undefined){
+                        return false
+                    }
+                }
             }
         }
-        arrayOfCoords.array.forEach(element => {
-            for (let i = 0; i <)
-        });
+            
+        
+
+        return true;
         }
 
 
