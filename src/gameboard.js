@@ -238,7 +238,7 @@ function Gameboard() {
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
             let newCoords = getShipCoords(coord1, coord2);
-            if (isInBounds(newCoords) == false && isFreeAround(newCoords) == false){
+            if (isInBounds(newCoords) == false || isFreeAround(newCoords) == false){
                 i--;
             } else {
                 let placeThisShip = placeShip(1,coord1,coord2);;
@@ -247,8 +247,8 @@ function Gameboard() {
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
-            console.log(newBoard[coord1][coord2])
-            console.log(newBoard)
+            // console.log(newBoard[coord1][coord2])
+            // console.log(newBoard)
             }
             
         }
@@ -257,31 +257,56 @@ function Gameboard() {
             let orientation = decideOrientation();
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let placeThisShip = placeShip(2,coord1,coord2, orientation);
+            let newCoords = getShipCoords(2,coord1,coord2, orientation);
+            if (isInBounds(newCoords) == false ||  isFreeAround(newCoords) == false){
+                i--;
+            } else {
+                let placeThisShip = placeShip(2,coord1,coord2,orientation);
+            // placeThisShip = placeShip(1,coord1,coord2);
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
+            }
         }
+            
     
         for (let i = 0; i <= 1; i++){
             let orientation = decideOrientation();
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let placeThisShip = placeShip(3,coord1,coord2, orientation);
+            let newCoords = getShipCoords(3,coord1,coord2, orientation);
+            if (isInBounds(newCoords) == false || isFreeAround(newCoords) == false){
+                i--;
+            } else {
+                let placeThisShip = placeShip(3,coord1,coord2,orientation);
+            // placeThisShip = placeShip(1,coord1,coord2);
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
         }
+        }
+            
+            
+       
     
         for (let i = 0; i < 1; i++){
             let orientation = decideOrientation();
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let placeThisShip = placeShip(4,coord1,coord2, orientation);
+            let newCoords = getShipCoords(4,coord1,coord2, orientation);
+            if (isInBounds(newCoords) == false ||  isFreeAround(newCoords) == false){
+                i--;
+            } else {
+                let placeThisShip = placeShip(4,coord1,coord2,orientation);
+            // placeThisShip = placeShip(1,coord1,coord2);
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
         }
+        }
+            
+            
+        
     
        
     
