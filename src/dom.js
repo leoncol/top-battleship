@@ -40,16 +40,16 @@ function generateFleetBoard(boardType){
         newFloatBoard.id = `A-fleetboard`;
         board = document.querySelector('#gameboards-a');
         let oneSquareShip = document.createElement('li');
-        oneSquareShip.id = '1-square-ship'
+        oneSquareShip.id = '1-square-ship-A'
         oneSquareShip.textContent = '1-square-ships:'
         let twoSquareShip = document.createElement('li');
-        twoSquareShip.id = '2-square-ship'
+        twoSquareShip.id = '2-square-ship-A'
         twoSquareShip.textContent = '2-square-ships:'
         let threeSquareShip = document.createElement('li');
-        threeSquareShip.id = '3-square-ship';
+        threeSquareShip.id = '3-square-ship-A';
         threeSquareShip.textContent = '3-square-ships:'
         let fourSquareShip = document.createElement('li');
-        fourSquareShip.id = '4-square-ship';
+        fourSquareShip.id = '4-square-ship-A';
         fourSquareShip.textContent = '4-square-ships:'
         newFloatBoard.append(oneSquareShip,twoSquareShip,threeSquareShip,fourSquareShip);
         board.appendChild(newFloatBoard);
@@ -57,16 +57,16 @@ function generateFleetBoard(boardType){
         newFloatBoard.id = `B-fleetboard`;
         board = document.querySelector('#gameboards-b');
         let oneSquareShip = document.createElement('li');
-        oneSquareShip.id = '1-square-ship'
+        oneSquareShip.id = '1-square-ship-B'
         oneSquareShip.textContent = '1-square-ships:'
         let twoSquareShip = document.createElement('li');
-        twoSquareShip.id = '2-square-ship'
+        twoSquareShip.id = '2-square-ship-B'
         twoSquareShip.textContent = '2-square-ships:'
         let threeSquareShip = document.createElement('li');
-        threeSquareShip.id = '3-square-ship';
+        threeSquareShip.id = '3-square-ship-B';
         threeSquareShip.textContent = '3-square-ships:'
         let fourSquareShip = document.createElement('li');
-        fourSquareShip.id = '4-square-ship';
+        fourSquareShip.id = '4-square-ship-B';
         fourSquareShip.textContent = '4-square-ships:'
         newFloatBoard.append(oneSquareShip,twoSquareShip,threeSquareShip,fourSquareShip);
         board.appendChild(newFloatBoard);
@@ -98,6 +98,7 @@ function gameController(){
     displayShips(humanPlayer.myGameboard, 'A');
     displayShips(computerPlayer.myGameboard, 'B');
     boardEventListeners();
+    updateBoards();
     
 }
 
@@ -392,7 +393,15 @@ function colorBoard(shipIndexes, type){
     }
 
     
-}    
+}
+
+function updateBoards(){
+    let playerAShips = document.querySelectorAll("#A-fleetboard li");
+    let playerBShips = document.querySelectorAll("#B-fleetboard li");
+
+    console.log(playerAShips);
+    console.log(playerBShips);
+}
 
 
 

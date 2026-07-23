@@ -323,7 +323,7 @@ function Gameboard() {
         
     }
 
-    let checkSurroundingCoords = function(){}
+    
 
 
 
