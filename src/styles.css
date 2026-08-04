@@ -43,9 +43,10 @@ ol {
 }
 
 
-#new-game{
+#new-game, #generate-ships{
     margin-bottom: 1rem;
-}
+ }
+ 
 
 .A-game-position {
     display: flex;

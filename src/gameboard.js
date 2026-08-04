@@ -237,7 +237,7 @@ function Gameboard() {
         for (let i = 0; i <= 3; i++){
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
-            let newCoords = getShipCoords(coord1, coord2);
+            let newCoords = getShipCoords(1,coord1, coord2);
             if (isInBounds(newCoords) == false || isFreeAround(newCoords) == false){
                 i--;
             } else {
@@ -323,11 +323,20 @@ function Gameboard() {
         
     }
 
+    function cleanBoard(){
+        newBoard = createBoard();
+
+    }
+
+    function returnBoard(){
+        return newBoard;
+    }
+
     
 
 
 
-    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, isFreeAround, generateShipCoords, newBoard}
+    return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, isFreeAround, generateShipCoords, cleanBoard,returnBoard}
     }
    
 // module.exports = Gameboard;
