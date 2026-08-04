@@ -60,16 +60,17 @@ function gameController(){
 
 
 function gameEnd(winner){
+    endGameActions();
    if (winner == 'computer'){
        alert(`The game is over, the winner is the ${winner}`);
-       alert(`To start a new game, click on the "Start a new game button"`)
+       
    } else {
        alert(`The game is over, you are the winner`);
-       alert(`To start a new game, click on the "Start a new game button"`)
+       
    }
 
-
-   endGameActions();
+   newGame();
+   
   
 }
 
@@ -378,23 +379,50 @@ function colorBoard(shipIndexes, type){
   
 }
 
+function resetBoardAppereance(){
+    const gameBoardSquares = document.querySelectorAll(`.A-game-position`);
+
+    gameBoardSquares.forEach(element =>{
+        element.classList.remove(`ship`);
+        element.replaceChildren();
+        
+    })
+}
+
+function resetComputerBoardAppereance(){
+    const gameBoardSquares = document.querySelectorAll(`.B-game-position`);
+
+    gameBoardSquares.forEach(element =>{
+        element.classList.remove(`ship`);
+        element.replaceChildren();
+        
+    })
+}
+
 
 
 
 function eventListeners(){
    let newGameButton = document.querySelector('#new-game');
    let generatePlayerShipsButton = document.querySelector('#generate-ships');
+   // Select by ID and disable
+    document.getElementById("new-game").disabled = true;
+
 
 
    newGameButton.addEventListener("click", () => {
        gameController();
+       document.getElementById("new-game").disabled = true;
+       document.getElementById("generate-ships").disabled = true;
    })
 
 
    generatePlayerShipsButton.addEventListener("click", () => {
+    resetBoardAppereance();
     humanPlayer.myGameboard.cleanBoard();
     populateGameboards(humanPlayer);
     displayShips(humanPlayer.myGameboard, 'A');
+    document.getElementById("new-game").disabled = false;
 
    })
 
@@ -404,6 +432,32 @@ function eventListeners(){
 
 
 }
+
+  function newGame(){
+    let playerGameboard = document.querySelector(`#A-gameboard`);
+   let computerGameboard = document.querySelector(`#B-gameboard`);
+ 
+
+
+   let aBoardClasses = playerGameboard.classList;
+   let bBoardClasses = computerGameboard.classList;
+  
+
+
+   aBoardClasses.remove(`unselectable`);
+   bBoardClasses.remove(`unselectable`);
+
+   humanPlayer.myGameboard.cleanBoard();
+   computerPlayer.myGameboard.cleanBoard();
+
+   resetBoardAppereance();
+   resetComputerBoardAppereance();
+   document.getElementById("new-game").disabled = false;
+   document.getElementById("generate-ships").disabled = false;
+   
+
+   
+  }
 generateBoards();
 eventListeners();
 
