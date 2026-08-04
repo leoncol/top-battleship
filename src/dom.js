@@ -54,6 +54,7 @@ function gameController(){
    populateGameboards(computerPlayer);
    displayShips(computerPlayer.myGameboard, 'B');
    boardEventListeners();
+   resetPointerEvents('B');
   
   
 }
@@ -76,8 +77,8 @@ function gameEnd(winner){
 
 
 function endGameActions(){
-   let playerGameboard = document.querySelector(`#A-gameboard`);
-   let computerGameboard = document.querySelector(`#B-gameboard`);
+   let playerGameboard = document.querySelector(`#gameboards-a`);
+   let computerGameboard = document.querySelector(`#gameboards-b`);
 
 
    let aBoardClasses = playerGameboard.classList;
@@ -114,6 +115,7 @@ function handleClick(event) {
 function attackShip(boardSquare){
    let computerBoard = computerPlayer.myGameboard;
    let targetClasses = boardSquare.classList;
+   console.log(targetClasses)
    let coords = boardSquare.id;
    coords = coords.split('');
    let coord1 = coords[1];
@@ -314,13 +316,17 @@ function gameTurns(player, type, coord1, coord2){
 }
 
 
+const handleEvent = (event) => {
+    handleClick(event); 
+};
+
 function boardEventListeners(){
+    
    const boardPositions = document.querySelectorAll(`.B-game-position`);
    boardPositions.forEach(position => {
-       position.addEventListener('click', (event) => {
-           handleClick(event);
+       position.addEventListener('click', handleEvent) ;
        })
-   });
+   
 }
 
 
@@ -366,6 +372,7 @@ function colorBoard(shipIndexes, type){
    }
   
    if (type == 'B'){
+    console.log(computerPlayer.myGameboard.returnBoard())
        for (let i = 0; i <= shipIndexes.length -1; i++){
            let id = shipIndexes[i];
            id = String(id[0])+String(id[1]);
@@ -393,11 +400,23 @@ function resetComputerBoardAppereance(){
     const gameBoardSquares = document.querySelectorAll(`.B-game-position`);
 
     gameBoardSquares.forEach(element =>{
-        element.classList.remove(`ship`);
+        element.classList.remove(`ship`,`computer-ship`);
         element.replaceChildren();
+        element.removeEventListener('click', handleEvent);
         
     })
 }
+
+function resetPointerEvents(letter){
+    const gameBoardSquares = document.querySelectorAll(`.${letter}-game-position`);
+
+    gameBoardSquares.forEach(element =>{
+        element.style.pointerEvents = "auto";
+        
+    })
+
+}
+
 
 
 
@@ -434,8 +453,8 @@ function eventListeners(){
 }
 
   function newGame(){
-    let playerGameboard = document.querySelector(`#A-gameboard`);
-   let computerGameboard = document.querySelector(`#B-gameboard`);
+    let playerGameboard = document.querySelector(`#gameboards-a`);
+   let computerGameboard = document.querySelector(`#gameboards-b`);
  
 
 
@@ -454,6 +473,9 @@ function eventListeners(){
    resetComputerBoardAppereance();
    document.getElementById("new-game").disabled = false;
    document.getElementById("generate-ships").disabled = false;
+   playerCanAttack = true;
+   
+
    
 
    

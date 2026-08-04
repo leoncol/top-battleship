@@ -325,6 +325,8 @@ function Gameboard() {
 
     function cleanBoard(){
         newBoard = createBoard();
+        myFleet = [];
+        hitShipsCoords = [];
 
     }
 
