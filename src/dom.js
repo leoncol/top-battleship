@@ -18,7 +18,6 @@ function generateHtmlBoard(boardType){
    if (boardType == 'A'){
        newBoard.id = `A-gameboard`;
        board = document.querySelector('#gameboards-a');
-       console.log(board)
    } else {
        newBoard.id = `B-gameboard`;
        board = document.querySelector('#gameboards-b');
@@ -63,10 +62,10 @@ function gameController(){
 function gameEnd(winner){
     endGameActions();
    if (winner == 'computer'){
-       alert(`The game is over, the winner is the ${winner}`);
+    alert(`The game is over, the winner is the ${winner}`);
        
    } else {
-       alert(`The game is over, you are the winner`);
+    alert(`The game is over, you are the winner`);
        
    }
 
@@ -91,7 +90,6 @@ function endGameActions(){
 }
 
 
-//4 1-square ships, 3 2-squares ships (1 h, 2 v), 2 3-squares ship (2 h), 1 4-squares ship (1 v)
 
 
 function populateGameboards(player){
@@ -115,7 +113,6 @@ function handleClick(event) {
 function attackShip(boardSquare){
    let computerBoard = computerPlayer.myGameboard;
    let targetClasses = boardSquare.classList;
-   console.log(targetClasses)
    let coords = boardSquare.id;
    coords = coords.split('');
    let coord1 = coords[1];
@@ -264,13 +261,11 @@ function computerAttacksNearby(previousCoords1, previousCoords2){
        } else {
            gameTurns('computer', 1, newCoords1, newCoords2);
        }
-       // console.log(`Is the fleet sunk? ${fleetState}`);
-       // computerAttacksDelayed(1,newCoords2, newCoords2 );
    } else {
        let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
       
        if (boardSquare.hasChildNodes()){
-           computerAttacksDelayed(1,newCoords2, newCoords2 );
+           computerAttacksDelayed(1,newCoords1, newCoords2 );
            return;
        }
        let indicateHit = document.createElement('span');
@@ -372,7 +367,6 @@ function colorBoard(shipIndexes, type){
    }
   
    if (type == 'B'){
-    console.log(computerPlayer.myGameboard.returnBoard())
        for (let i = 0; i <= shipIndexes.length -1; i++){
            let id = shipIndexes[i];
            id = String(id[0])+String(id[1]);

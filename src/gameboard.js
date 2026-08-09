@@ -22,7 +22,7 @@ function Gameboard() {
 
     let hitShipsCoords = [];
 
-    let isTheFleetSunk = function(fleet = myFleet){
+    let isTheFleetSunk = function(fleet = returnMyFleet()){
         let sunk = 0;
         let afloat = 0;
 
@@ -42,7 +42,7 @@ function Gameboard() {
         }
 }
 
-    let reportHitShips = function(coords = hitShipsCoords){
+    let reportHitShips = function(coords = returnHitShipCoords()){
         return coords;
     }
 
@@ -64,8 +64,10 @@ function Gameboard() {
                 ship.increaseHit();
                 let numberOfHits = ship.returnNumberOfHits();
 
-                let hitCoords = [coord1,coord2]
+                let hitCoords = [coord1,coord2];
+                let hitShipsCoords = returnHitShipCoords();
                 hitShipsCoords.push(hitCoords);
+                newBoard[coord1][coord2] = attack;
                 return numberOfHits
             }
         }
@@ -94,7 +96,7 @@ function Gameboard() {
     }
  
 
-    let isInBounds = function(arrayOfCoords){ // Check if the subsequent vertical or horizontal slots are in bounds
+    let isInBounds = function(arrayOfCoords){ 
         for (let i = 0; i < arrayOfCoords.length; i ++){
             let coords = arrayOfCoords[i];
             let coords1 = coords[0];
@@ -132,15 +134,6 @@ function Gameboard() {
 
 
     let placeShip = function(size, coord1, coord2, orientation){
-        // if ((coord1 > 9|| coord2 > 9) ||(coord1 < 0|| coord2 < 0) ){
-        //     return 'Invalid coords';
-        // } else if (size > 4){
-        //     return 'Invalid size';
-        // } else if (size != 1 && orientation != 'h' && orientation != 'v'){
-        //     return 'Invalid orientation'; // test orientation --  evaluate when ship is out of bounds;
-        // } else if (isInBounds(size, coord1, coord2, orientation) == false){
-        //     return 'Invalid placement. Ship out of bounds.';
-        // } else {
             let newShip = createShip(size);
             let fullShip = [];
             if (newShip.returnLength() == 1){
@@ -191,7 +184,7 @@ function Gameboard() {
                 myFleet.push(fullShip);
                 return fullShip;
             }
-        // }
+        
     }
 
     let getShipCoords = function (size, coord1, coord2, orientation){
@@ -220,20 +213,6 @@ function Gameboard() {
 
     let generateShipCoords = function (){
 
-
-            //         Imagine if you had a small utility loop that turned a starting position into an array of coordinate pairs:
-
-            // Input: size: 3, coord1: 2, coord2: 2, orientation: 'h'
-
-            // Output Array: [[2, 2], [2, 3], [2, 4]]
-
-//             1. Create a New Helper: getShipCoordinates(size, coord1, coord2, orientation)
-// Before touching your validation, write a brand new helper function. Its only job is to take the placement parameters and 
-// return an array of all the coordinate pairs the ship will occupy.
-
-// How it helps: Instead of guessing where the ship lives based on it
-// s size, this gives you a predictable array like [[0,1], [0,2], [0,3]]. 
-// You will pass this array into your other functions.
         for (let i = 0; i <= 3; i++){
             let coord1 = Math.floor(Math.random() * 10);
             let coord2 = Math.floor(Math.random() * 10);
@@ -242,13 +221,11 @@ function Gameboard() {
                 i--;
             } else {
                 let placeThisShip = placeShip(1,coord1,coord2);;
-            // placeThisShip = placeShip(1,coord1,coord2);
             
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
-            // console.log(newBoard[coord1][coord2])
-            // console.log(newBoard)
+            
             }
             
         }
@@ -262,7 +239,6 @@ function Gameboard() {
                 i--;
             } else {
                 let placeThisShip = placeShip(2,coord1,coord2,orientation);
-            // placeThisShip = placeShip(1,coord1,coord2);
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
@@ -279,7 +255,6 @@ function Gameboard() {
                 i--;
             } else {
                 let placeThisShip = placeShip(3,coord1,coord2,orientation);
-            // placeThisShip = placeShip(1,coord1,coord2);
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
@@ -298,7 +273,6 @@ function Gameboard() {
                 i--;
             } else {
                 let placeThisShip = placeShip(4,coord1,coord2,orientation);
-            // placeThisShip = placeShip(1,coord1,coord2);
             if (typeof placeThisShip  == 'string'){
                 i--;
             };
@@ -330,6 +304,16 @@ function Gameboard() {
 
     }
 
+    function returnMyFleet(){
+        return myFleet;
+    }
+
+    function returnHitShipCoords(){
+        return hitShipsCoords;
+    }
+
+
+
     function returnBoard(){
         return newBoard;
     }
@@ -341,5 +325,5 @@ function Gameboard() {
     return {placeShip, receiveAttack, reportMissedHits, isTheFleetSunk, reportHitShips, isFreeAround, generateShipCoords, cleanBoard,returnBoard}
     }
    
-// module.exports = Gameboard;
+
 
