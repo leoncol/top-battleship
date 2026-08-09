@@ -1,481 +1,363 @@
-import {Gameboard} from "./gameboard"
-import {Player} from "./player"
-import {Ship} from "./ship"
+import { Gameboard } from "./gameboard";
+import { Player } from "./player";
+import { Ship } from "./ship";
 
+let humanPlayer = Player("human");
+let computerPlayer = Player("computer");
 
-let humanPlayer = Player('human');
-let computerPlayer = Player('computer');
-
-
-
-
-
-
-function generateHtmlBoard(boardType){
- 
-   let board = 0;
-   let newBoard = document.createElement('div');
-   if (boardType == 'A'){
-       newBoard.id = `A-gameboard`;
-       board = document.querySelector('#gameboards-a');
-   } else {
-       newBoard.id = `B-gameboard`;
-       board = document.querySelector('#gameboards-b');
-   }
-       for (let i = 0; i <= 9; i++){
-           for (let x = 0; x <= 9; x++){
-               let square = document.createElement('div');
-               square.className = `${boardType}-game-position`;
-               square.id = `${boardType}${i}${x}`;
-               newBoard.appendChild(square);
-           }
-       }
-   board.appendChild(newBoard);
-  
-      
-  
+function generateHtmlBoard(boardType) {
+  let board = 0;
+  let newBoard = document.createElement("div");
+  if (boardType == "A") {
+    newBoard.id = `A-gameboard`;
+    board = document.querySelector("#gameboards-a");
+  } else {
+    newBoard.id = `B-gameboard`;
+    board = document.querySelector("#gameboards-b");
+  }
+  for (let i = 0; i <= 9; i++) {
+    for (let x = 0; x <= 9; x++) {
+      let square = document.createElement("div");
+      square.className = `${boardType}-game-position`;
+      square.id = `${boardType}${i}${x}`;
+      newBoard.appendChild(square);
+    }
+  }
+  board.appendChild(newBoard);
 }
 
+export { generateHtmlBoard };
 
-export {
-   generateHtmlBoard};
-
-
-function generateBoards(){
-   // create both gameboards
-   generateHtmlBoard('A');
-   generateHtmlBoard('B');
- 
+function generateBoards() {
+  generateHtmlBoard("A");
+  generateHtmlBoard("B");
 }
 
-
-function gameController(){
-   populateGameboards(computerPlayer);
-   displayShips(computerPlayer.myGameboard, 'B');
-   boardEventListeners();
-   resetPointerEvents('B');
-  
-  
+function gameController() {
+  populateGameboards(computerPlayer);
+  displayShips(computerPlayer.myGameboard, "B");
+  boardEventListeners();
+  resetPointerEvents("B");
 }
 
-
-function gameEnd(winner){
-    endGameActions();
-   if (winner == 'computer'){
+function gameEnd(winner) {
+  endGameActions();
+  if (winner == "computer") {
     alert(`The game is over, the winner is the ${winner}`);
-       
-   } else {
+  } else {
     alert(`The game is over, you are the winner`);
-       
-   }
+  }
 
-   newGame();
-   
-  
+  newGame();
 }
 
+function endGameActions() {
+  let playerGameboard = document.querySelector(`#gameboards-a`);
+  let computerGameboard = document.querySelector(`#gameboards-b`);
 
-function endGameActions(){
-   let playerGameboard = document.querySelector(`#gameboards-a`);
-   let computerGameboard = document.querySelector(`#gameboards-b`);
+  let aBoardClasses = playerGameboard.classList;
+  let bBoardClasses = computerGameboard.classList;
 
-
-   let aBoardClasses = playerGameboard.classList;
-   let bBoardClasses = computerGameboard.classList;
-  
-
-
-   aBoardClasses.add(`unselectable`);
-   bBoardClasses.add(`unselectable`);
+  aBoardClasses.add(`unselectable`);
+  bBoardClasses.add(`unselectable`);
 }
 
-
-
-
-function populateGameboards(player){
-   player.myGameboard.generateShipCoords();
+function populateGameboards(player) {
+  player.myGameboard.generateShipCoords();
 }
-
-
-
 
 let playerCanAttack = true;
 
-
 function handleClick(event) {
-   if (!playerCanAttack) return;
-   let boardSquare = event.target;
-   attackShip(boardSquare)
- 
+  if (!playerCanAttack) return;
+  let boardSquare = event.target;
+  attackShip(boardSquare);
 }
 
+function attackShip(boardSquare) {
+  let computerBoard = computerPlayer.myGameboard;
+  let targetClasses = boardSquare.classList;
+  let coords = boardSquare.id;
+  coords = coords.split("");
+  let coord1 = coords[1];
+  let coord2 = coords[2];
+  coord1 = parseFloat(coord1);
+  coord2 = parseFloat(coord2);
 
-function attackShip(boardSquare){
-   let computerBoard = computerPlayer.myGameboard;
-   let targetClasses = boardSquare.classList;
-   let coords = boardSquare.id;
-   coords = coords.split('');
-   let coord1 = coords[1];
-   let coord2 = coords[2];
-   coord1 = parseFloat(coord1);
-   coord2 = parseFloat(coord2);
-
-
-   if (targetClasses[1]){       
-       computerBoard.receiveAttack(coord1, coord2)
-       targetClasses.add(`ship`);
-       let indicateHit = document.createElement('div');
-       indicateHit.textContent = 'X';
-       indicateHit.classList.add('hit');
-       boardSquare.appendChild(indicateHit);
-       boardSquare.style.pointerEvents = "none";
-       let fleetState = computerBoard.isTheFleetSunk();
-       if (fleetState){
-           gameEnd('human');
-       } else {
-           gameTurns('human');
-       }
-   } else {
-       let indicateHit = document.createElement('span');
-       indicateHit.classList.add('nohit');
-       boardSquare.appendChild(indicateHit);
-       boardSquare.style.pointerEvents = "none";
-       gameTurns('computer', 0);
-
-
-   }
-  
-     
+  if (targetClasses[1]) {
+    computerBoard.receiveAttack(coord1, coord2);
+    targetClasses.add(`ship`);
+    let indicateHit = document.createElement("div");
+    indicateHit.textContent = "X";
+    indicateHit.classList.add("hit");
+    boardSquare.appendChild(indicateHit);
+    boardSquare.style.pointerEvents = "none";
+    let fleetState = computerBoard.isTheFleetSunk();
+    if (fleetState) {
+      gameEnd("human");
+    } else {
+      gameTurns("human");
+    }
+  } else {
+    let indicateHit = document.createElement("span");
+    indicateHit.classList.add("nohit");
+    boardSquare.appendChild(indicateHit);
+    boardSquare.style.pointerEvents = "none";
+    gameTurns("computer", 0);
+  }
 }
 
+function computerAttacks() {
+  let humanBoard = humanPlayer.myGameboard;
+  let coord1 = Math.floor(Math.random() * 10);
+  let coord2 = Math.floor(Math.random() * 10);
+  let attack = humanBoard.receiveAttack(coord1, coord2);
 
-// The game is played against the computer, so make the ‘computer’
-// players capable of making random plays. The computer does not have to
-// be smart, but it should know whether or not a given move is legal
-// (i.e. it shouldn’t shoot the same coordinate twice).
-
-
-
-
-
-
-function computerAttacks(){
-   let humanBoard = humanPlayer.myGameboard;
-   let coord1 = Math.floor(Math.random() * 10);
-   let coord2 = Math.floor(Math.random() * 10);
-   let attack = humanBoard.receiveAttack(coord1, coord2);
-  
-   if (attack != 'x'){
-       let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
-       if (boardSquare.hasChildNodes()){
-           computerAttacks();
-           return;
-       }
-       let indicateHit = document.createElement('div');
-       indicateHit.textContent = 'X';
-       indicateHit.classList.add('hit');
-       boardSquare.appendChild(indicateHit);
-       let fleetState = humanBoard.isTheFleetSunk();
-       if (fleetState){
-           gameEnd('computer');
-       } else {
-           gameTurns('computer', 1, coord1, coord2);
-       }
-       // computerAttacksDelayed(1,coord1, coord2 );
-   } else {
-       let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
-       if (boardSquare.hasChildNodes()){
-           computerAttacksDelayed(0);
-           return;
-       }
-       let indicateHit = document.createElement('span');
-       indicateHit.classList.add('nohit');
-       boardSquare.appendChild(indicateHit);
-       let fleetState = humanBoard.isTheFleetSunk();
-       gameTurns('human');
-
-
-   }
-  
-     
+  if (attack != "x") {
+    let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
+    if (boardSquare.hasChildNodes()) {
+      computerAttacks();
+      return;
+    }
+    let indicateHit = document.createElement("div");
+    indicateHit.textContent = "X";
+    indicateHit.classList.add("hit");
+    boardSquare.appendChild(indicateHit);
+    let fleetState = humanBoard.isTheFleetSunk();
+    if (fleetState) {
+      gameEnd("computer");
+    } else {
+      gameTurns("computer", 1, coord1, coord2);
+    }
+  } else {
+    let boardSquare = document.querySelector(`#A${coord1}${coord2}`);
+    if (boardSquare.hasChildNodes()) {
+      computerAttacksDelayed(0);
+      return;
+    }
+    let indicateHit = document.createElement("span");
+    indicateHit.classList.add("nohit");
+    boardSquare.appendChild(indicateHit);
+    let fleetState = humanBoard.isTheFleetSunk();
+    gameTurns("human");
+  }
 }
 
+function computerAttacksNearby(previousCoords1, previousCoords2) {
+  let humanBoard = humanPlayer.myGameboard;
+  let newCoords1 = 0;
+  let newCoords2 = 0;
+  let decideOrientation = Math.floor(Math.random() * 2);
+  if (decideOrientation == 0) {
+    if (previousCoords1 == 0) {
+      newCoords1 = 1; // if the vertical coords are 0, we cannot go lower
+      newCoords2 = previousCoords2;
+    } else if (previousCoords1 == 9) {
+      newCoords1 = 8; // if the vertical coords are 9, we cannot go higher
+      newCoords2 = previousCoords2;
+    } else {
+      let decideMovement = Math.floor(Math.random() * 2); // decide if the movement is forward or backward
+      if (decideMovement == 0) {
+        newCoords1 = previousCoords1 - 1;
+        newCoords2 = previousCoords2;
+      } else {
+        newCoords1 = previousCoords1 + 1;
+        newCoords2 = previousCoords2;
+      }
+    }
+  } else if (decideOrientation == 1) {
+    // horizontal
+    if (previousCoords2 == 0) {
+      newCoords2 = 1; // if the vertical coords are 0, we cannot go lower
+      newCoords1 = previousCoords1;
+    } else if (previousCoords2 == 9) {
+      newCoords2 = 8; // if the vertical coords are 9, we cannot go higher
+      newCoords1 = previousCoords1;
+    } else {
+      let decideMovement = Math.floor(Math.random() * 2); // decide if the movement is forward or backward
+      if (decideMovement == 0) {
+        newCoords2 = previousCoords2 - 1;
+        newCoords1 = previousCoords1;
+      } else {
+        newCoords2 = previousCoords2 + 1;
+        newCoords1 = previousCoords1;
+      }
+    }
+  }
 
-function computerAttacksNearby(previousCoords1, previousCoords2){
-   let humanBoard = humanPlayer.myGameboard;
-   let newCoords1 = 0;
-   let newCoords2 = 0;
-   let decideOrientation = Math.floor(Math.random() * 2);
-   if (decideOrientation == 0){ // vertical
-       if (previousCoords1 == 0){
-           newCoords1 = 1; // if the vertical coords are 0, we cannot go lower
-           newCoords2 = previousCoords2;
-       } else if (previousCoords1 == 9){
-           newCoords1 = 8; // if the vertical coords are 9, we cannot go higher
-           newCoords2 = previousCoords2;
-       } else {
-           let decideMovement = Math.floor(Math.random() * 2); // decide if the movement is forward or backward
-           if (decideMovement == 0){
-           newCoords1 = previousCoords1 - 1;
-           newCoords2 = previousCoords2;
-           } else {
-           newCoords1 = previousCoords1 + 1;
-           newCoords2 = previousCoords2;
-           }
-       }
-   } else if (decideOrientation == 1){ // horizontal
-       if (previousCoords2 == 0){
-           newCoords2 = 1; // if the vertical coords are 0, we cannot go lower
-           newCoords1 = previousCoords1;
-       } else if (previousCoords2 == 9){
-           newCoords2 = 8; // if the vertical coords are 9, we cannot go higher
-           newCoords1 = previousCoords1;
-       } else {
-           let decideMovement = Math.floor(Math.random() * 2); // decide if the movement is forward or backward
-           if (decideMovement == 0){
-           newCoords2 = previousCoords2 - 1;
-           newCoords1 = previousCoords1;
-           } else {
-           newCoords2 = previousCoords2 + 1;
-           newCoords1 = previousCoords1;
-           }
-       }
-   }
- 
-   let attack = humanBoard.receiveAttack(newCoords1, newCoords2);
-  
-  
-   if (attack != 'x'){
-       let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
-       if (boardSquare.hasChildNodes()){
-           computerAttacks();
-           return;
-       }
-       let indicateHit = document.createElement('div');
-       indicateHit.textContent = 'X';
-       indicateHit.classList.add('hit');
-       boardSquare.appendChild(indicateHit);
-       let fleetState = humanBoard.isTheFleetSunk();
-       if (fleetState){
-           gameEnd('computer');
-       } else {
-           gameTurns('computer', 1, newCoords1, newCoords2);
-       }
-   } else {
-       let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
-      
-       if (boardSquare.hasChildNodes()){
-           computerAttacksDelayed(1,newCoords1, newCoords2 );
-           return;
-       }
-       let indicateHit = document.createElement('span');
-       indicateHit.classList.add('nohit');
-       boardSquare.appendChild(indicateHit);
-       gameTurns('human');
+  let attack = humanBoard.receiveAttack(newCoords1, newCoords2);
 
+  if (attack != "x") {
+    let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
+    if (boardSquare.hasChildNodes()) {
+      computerAttacks();
+      return;
+    }
+    let indicateHit = document.createElement("div");
+    indicateHit.textContent = "X";
+    indicateHit.classList.add("hit");
+    boardSquare.appendChild(indicateHit);
+    let fleetState = humanBoard.isTheFleetSunk();
+    if (fleetState) {
+      gameEnd("computer");
+    } else {
+      gameTurns("computer", 1, newCoords1, newCoords2);
+    }
+  } else {
+    let boardSquare = document.querySelector(`#A${newCoords1}${newCoords2}`);
 
-   }
+    if (boardSquare.hasChildNodes()) {
+      computerAttacksDelayed(1, newCoords1, newCoords2);
+      return;
+    }
+    let indicateHit = document.createElement("span");
+    indicateHit.classList.add("nohit");
+    boardSquare.appendChild(indicateHit);
+    gameTurns("human");
+  }
 }
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// 1. Create a reusable delay function
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-
-// 2. Use it inside an async function
-async function computerAttacksDelayed(type, previousCoords1, previousCoords2) { // 0 = not continuous // 1 = continuous
-  // Wait for 3000 milliseconds (3 seconds)
- await delay(0);
- if (type == 0){
-   computerAttacks();
- } else {
-   computerAttacksNearby(previousCoords1, previousCoords2);
- }
- }
-
-
-
-
-
-
-function gameTurns(player, type, coord1, coord2){
-   if (player == 'human'){
-       playerCanAttack = true;
-   } else if (player == 'computer' && type == 0) {
-       playerCanAttack = false
-       computerAttacksDelayed(0);
-   } else {
-       playerCanAttack = false;
-       computerAttacksDelayed(1, coord1, coord2);
-   }
+async function computerAttacksDelayed(type, previousCoords1, previousCoords2) {
+  await delay(0);
+  if (type == 0) {
+    computerAttacks();
+  } else {
+    computerAttacksNearby(previousCoords1, previousCoords2);
+  }
 }
 
+function gameTurns(player, type, coord1, coord2) {
+  if (player == "human") {
+    playerCanAttack = true;
+  } else if (player == "computer" && type == 0) {
+    playerCanAttack = false;
+    computerAttacksDelayed(0);
+  } else {
+    playerCanAttack = false;
+    computerAttacksDelayed(1, coord1, coord2);
+  }
+}
 
 const handleEvent = (event) => {
-    handleClick(event); 
+  handleClick(event);
 };
 
-function boardEventListeners(){
-    
-   const boardPositions = document.querySelectorAll(`.B-game-position`);
-   boardPositions.forEach(position => {
-       position.addEventListener('click', handleEvent) ;
-       })
-   
+function boardEventListeners() {
+  const boardPositions = document.querySelectorAll(`.B-game-position`);
+  boardPositions.forEach((position) => {
+    position.addEventListener("click", handleEvent);
+  });
 }
 
-
-
-
-function displayShips(newBoard, type){
-   let ships = [];
-   let board = newBoard.returnBoard();;
-   let shipsIndexes = [];
-   for (let i = 0; i <= 9; i++){
-       for (let x = 0; x <= 9; x++){
-           let shipPart = board[i][x];
-           if (shipPart != 0){
-           ships.push(shipPart);
-           let yIndex = i;
-           let xIndex = x;
-           let shipIndex = [];
-           shipIndex.push(yIndex,xIndex);
-           shipsIndexes.push(shipIndex);
-          
-
-
-       }
-       }
-   }
-   colorBoard(shipsIndexes, type);
-
-
-  
+function displayShips(newBoard, type) {
+  let ships = [];
+  let board = newBoard.returnBoard();
+  let shipsIndexes = [];
+  for (let i = 0; i <= 9; i++) {
+    for (let x = 0; x <= 9; x++) {
+      let shipPart = board[i][x];
+      if (shipPart != 0) {
+        ships.push(shipPart);
+        let yIndex = i;
+        let xIndex = x;
+        let shipIndex = [];
+        shipIndex.push(yIndex, xIndex);
+        shipsIndexes.push(shipIndex);
+      }
+    }
+  }
+  colorBoard(shipsIndexes, type);
 }
 
+function colorBoard(shipIndexes, type) {
+  if (type == "A") {
+    for (let i = 0; i <= shipIndexes.length - 1; i++) {
+      let id = shipIndexes[i];
+      id = String(id[0]) + String(id[1]);
+      let shipPart = document.getElementById(`${type}${id}`);
+      shipPart.classList.add(`ship`);
+    }
+  }
 
-function colorBoard(shipIndexes, type){
-
-
-   if (type == 'A'){
-       for (let i = 0; i <= shipIndexes.length -1; i++){
-           let id = shipIndexes[i];
-           id = String(id[0])+String(id[1]);
-           let shipPart = document.getElementById(`${type}${id}`);
-           shipPart.classList.add(`ship`);
-       }
-   }
-  
-   if (type == 'B'){
-       for (let i = 0; i <= shipIndexes.length -1; i++){
-           let id = shipIndexes[i];
-           id = String(id[0])+String(id[1]);
-           let shipPart = document.getElementById(`${type}${id}`);
-           shipPart.classList.add(`computer-ship`);
-           // shipPart.classList.add(`ship`);
-       }
-   }
-
-
-  
+  if (type == "B") {
+    for (let i = 0; i <= shipIndexes.length - 1; i++) {
+      let id = shipIndexes[i];
+      id = String(id[0]) + String(id[1]);
+      let shipPart = document.getElementById(`${type}${id}`);
+      shipPart.classList.add(`computer-ship`);
+    }
+  }
 }
 
-function resetBoardAppereance(){
-    const gameBoardSquares = document.querySelectorAll(`.A-game-position`);
+function resetBoardAppereance() {
+  const gameBoardSquares = document.querySelectorAll(`.A-game-position`);
 
-    gameBoardSquares.forEach(element =>{
-        element.classList.remove(`ship`);
-        element.replaceChildren();
-        
-    })
+  gameBoardSquares.forEach((element) => {
+    element.classList.remove(`ship`);
+    element.replaceChildren();
+  });
 }
 
-function resetComputerBoardAppereance(){
-    const gameBoardSquares = document.querySelectorAll(`.B-game-position`);
+function resetComputerBoardAppereance() {
+  const gameBoardSquares = document.querySelectorAll(`.B-game-position`);
 
-    gameBoardSquares.forEach(element =>{
-        element.classList.remove(`ship`,`computer-ship`);
-        element.replaceChildren();
-        element.removeEventListener('click', handleEvent);
-        
-    })
+  gameBoardSquares.forEach((element) => {
+    element.classList.remove(`ship`, `computer-ship`);
+    element.replaceChildren();
+    element.removeEventListener("click", handleEvent);
+  });
 }
 
-function resetPointerEvents(letter){
-    const gameBoardSquares = document.querySelectorAll(`.${letter}-game-position`);
+function resetPointerEvents(letter) {
+  const gameBoardSquares = document.querySelectorAll(
+    `.${letter}-game-position`
+  );
 
-    gameBoardSquares.forEach(element =>{
-        element.style.pointerEvents = "auto";
-        
-    })
-
+  gameBoardSquares.forEach((element) => {
+    element.style.pointerEvents = "auto";
+  });
 }
 
+function eventListeners() {
+  let newGameButton = document.querySelector("#new-game");
+  let generatePlayerShipsButton = document.querySelector("#generate-ships");
+  document.getElementById("new-game").disabled = true;
 
-
-
-
-function eventListeners(){
-   let newGameButton = document.querySelector('#new-game');
-   let generatePlayerShipsButton = document.querySelector('#generate-ships');
-   // Select by ID and disable
+  newGameButton.addEventListener("click", () => {
+    gameController();
     document.getElementById("new-game").disabled = true;
+    document.getElementById("generate-ships").disabled = true;
+  });
 
-
-
-   newGameButton.addEventListener("click", () => {
-       gameController();
-       document.getElementById("new-game").disabled = true;
-       document.getElementById("generate-ships").disabled = true;
-   })
-
-
-   generatePlayerShipsButton.addEventListener("click", () => {
+  generatePlayerShipsButton.addEventListener("click", () => {
     resetBoardAppereance();
     humanPlayer.myGameboard.cleanBoard();
     populateGameboards(humanPlayer);
-    displayShips(humanPlayer.myGameboard, 'A');
+    displayShips(humanPlayer.myGameboard, "A");
     document.getElementById("new-game").disabled = false;
-
-   })
-
-
-
-
-
-
+  });
 }
 
-  function newGame(){
-    let playerGameboard = document.querySelector(`#gameboards-a`);
-   let computerGameboard = document.querySelector(`#gameboards-b`);
- 
+function newGame() {
+  let playerGameboard = document.querySelector(`#gameboards-a`);
+  let computerGameboard = document.querySelector(`#gameboards-b`);
 
+  let aBoardClasses = playerGameboard.classList;
+  let bBoardClasses = computerGameboard.classList;
 
-   let aBoardClasses = playerGameboard.classList;
-   let bBoardClasses = computerGameboard.classList;
-  
+  aBoardClasses.remove(`unselectable`);
+  bBoardClasses.remove(`unselectable`);
 
+  humanPlayer.myGameboard.cleanBoard();
+  computerPlayer.myGameboard.cleanBoard();
 
-   aBoardClasses.remove(`unselectable`);
-   bBoardClasses.remove(`unselectable`);
-
-   humanPlayer.myGameboard.cleanBoard();
-   computerPlayer.myGameboard.cleanBoard();
-
-   resetBoardAppereance();
-   resetComputerBoardAppereance();
-   document.getElementById("new-game").disabled = false;
-   document.getElementById("generate-ships").disabled = false;
-   playerCanAttack = true;
-   
-
-   
-
-   
-  }
+  resetBoardAppereance();
+  resetComputerBoardAppereance();
+  document.getElementById("new-game").disabled = false;
+  document.getElementById("generate-ships").disabled = false;
+  playerCanAttack = true;
+}
 generateBoards();
 eventListeners();
-
-
-

@@ -1,21 +1,16 @@
 import Gameboard from "./gameboard";
-export {Player};
+export { Player };
 
-function Player(type){
-    let typeOfPlayer = '';
+function Player(type) {
+  let typeOfPlayer = "";
 
-    if (type != 'computer' && type != 'human'){
-        typeOfPlayer = 'Invalid type'
-    } else {
-        typeOfPlayer = type;
-    }
-    
+  if (type != "computer" && type != "human") {
+    typeOfPlayer = "Invalid type";
+  } else {
+    typeOfPlayer = type;
+  }
 
-    let myGameboard = Gameboard();
+  let myGameboard = Gameboard();
 
-
-
-
-    return {myGameboard, typeOfPlayer}
+  return { myGameboard, typeOfPlayer };
 }
-

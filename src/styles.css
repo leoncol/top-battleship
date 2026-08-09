@@ -1,88 +1,86 @@
 * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-html, body {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    flex-direction: column;
-    
+html,
+body {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .center-all {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 ol {
-    list-style: none;
-    margin-top: 20px;
+  list-style: none;
+  margin-top: 20px;
 }
 
-
-#A-gameboard, #B-gameboard {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    background-color: rgb(186, 224, 241);
-    border: 1px solid black;
+#A-gameboard,
+#B-gameboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  background-color: rgb(186, 224, 241);
+  border: 1px solid black;
 }
 
 #gameboards {
-    display: flex;
-    justify-content: space-around;
-    gap: 5rem;
+  display: flex;
+  justify-content: space-around;
+  gap: 5rem;
 }
 
-
-#new-game, #generate-ships{
-    margin-bottom: 1rem;
- }
- 
+#new-game,
+#generate-ships {
+  margin-bottom: 1rem;
+}
 
 .A-game-position {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
 }
 
 .B-game-position {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
 }
 .ship {
-    background-color: rgb(150, 75, 0);
+  background-color: rgb(150, 75, 0);
 }
 
 .hit {
-    font-size: 3rem;
+  font-size: 3rem;
 }
 
 .nohit {
-    display: block;
-    width: 10px;
-    height: 10px;
-    background-color: #000000; /* Change to your preferred color */
-    border-radius: 50%;        /* Makes the square a perfect circle */
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: #000000; /* Change to your preferred color */
+  border-radius: 50%; /* Makes the square a perfect circle */
 }
 
 .unselectable {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }

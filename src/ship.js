@@ -1,29 +1,28 @@
 export default Ship;
 
 function Ship(size) {
-    let length = size;
-    let numberOfHits = 0;
-    let isSunk = function(){
-        if (numberOfHits >= length){
-            return true
-        } else {
-            return false
-        }
+  let length = size;
+  let numberOfHits = 0;
+  let isSunk = function () {
+    if (numberOfHits >= length) {
+      return true;
+    } else {
+      return false;
     }
+  };
 
-    let returnLength = function(){
-        return length;
-    }
+  let returnLength = function () {
+    return length;
+  };
 
-    let increaseHit = function(){
-        numberOfHits += 1;
-    }
+  let increaseHit = function () {
+    numberOfHits += 1;
+  };
 
-    let returnNumberOfHits = function(){
-        return numberOfHits;
-    }
-    return {isSunk, returnLength, increaseHit, returnNumberOfHits}
-    }
-   
+  let returnNumberOfHits = function () {
+    return numberOfHits;
+  };
+  return { isSunk, returnLength, increaseHit, returnNumberOfHits };
+}
+
 //    module.exports = Ship;
-
